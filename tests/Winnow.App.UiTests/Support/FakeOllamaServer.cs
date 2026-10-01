@@ -7,6 +7,7 @@ namespace Winnow.App.UiTests.Support;
 /// <summary>
 /// Answers like Ollama's /api/chat and /api/tags, deterministically: an article mentioning "PS5" is rejected
 /// for the game consoles exclusion, and so is any article containing a one-word exclusion from the prompt.
+/// Streaming requests are summaries: "Summary in {language}: {title}" then two points, sent in pieces.
 /// </summary>
 public sealed class FakeOllamaServer : IDisposable
 {
@@ -41,7 +42,8 @@ public sealed class FakeOllamaServer : IDisposable
             var answer = context.Request.Url!.AbsolutePath switch
             {
                 "/api/tags" => """{"models":[{"name":"qwen3:8b"}]}""",
-                "/api/chat" => Chat(JsonNode.Parse(context.Request.InputStream)!.AsObject()),
+                "/api/chat" => JsonNode.Parse(context.Request.InputStream)!.AsObject() is var request
+                    && request["stream"]?.GetValue<bool>() == true ? Summary(request) : Chat(request),
                 _ => null,
             };
             if (answer is null)
@@ -77,6 +79,19 @@ public sealed class FakeOllamaServer : IDisposable
                 : Answer(null, "Nouvelles applications et logiciels", "Parle d'un logiciel.");
 
         return new JsonObject { ["message"] = new JsonObject { ["role"] = "assistant", ["content"] = verdict } }.ToJsonString();
+    }
+
+    private static string Summary(JsonObject request)
+    {
+        var article = (string)request["messages"]![1]!["content"]!;
+        var language = article[(article.LastIndexOf("(Write the summary in ", StringComparison.Ordinal) + 22)..].Split(':')[0];
+        var title = article.Split('\n')[0]["Title: ".Length..];
+
+        string[] pieces = [$"Summary in {language}: ", title, "\n\n- First point\n", "- Second point"];
+        return string.Concat(pieces.Select(piece => Line(piece, done: false) + "\n")) + Line("", done: true) + "\n";
+
+        static string Line(string content, bool done) =>
+            new JsonObject { ["message"] = new JsonObject { ["role"] = "assistant", ["content"] = content }, ["done"] = done }.ToJsonString();
     }
 
     private static string Answer(string? exclusion, string? interest, string reason) =>

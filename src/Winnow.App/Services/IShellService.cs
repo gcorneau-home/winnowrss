@@ -6,6 +6,8 @@ namespace Winnow.App.Services;
 public interface IShellService
 {
     void OpenInBrowser(string url);
+
+    void CopyToClipboard(string text);
 }
 
 public sealed class ShellService : IShellService
@@ -15,4 +17,6 @@ public sealed class ShellService : IShellService
         if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Scheme is "http" or "https" or "mailto")
             Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
     }
+
+    public void CopyToClipboard(string text) => System.Windows.Clipboard.SetText(text);
 }

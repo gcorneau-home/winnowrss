@@ -23,6 +23,12 @@
             <Setter Property="FontFamily" Value="{StaticResource IconFont}" />
             <Setter Property="FontSize" Value="15" />
         </Style>
+        <Style x:Key="CardButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="4,0,0,0" />
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="FontFamily" Value="{StaticResource IconFont}" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
     </UserControl.Resources>
 
     <DockPanel>
@@ -83,6 +89,49 @@
                                 ToolTip="{loc:Tr Article_OpenInBrowser_Tip}"
                                 AutomationProperties.AutomationId="OpenInBrowser"
                                 AutomationProperties.Name="{loc:Tr Article_OpenInBrowser_Tip}" />
+
+                        <!-- Summary: the main part uses the last language asked for, the arrow lists the languages. -->
+                        <Button Style="{StaticResource ArticleToolButton}" Margin="12,0,0,0" Command="{Binding SummarizeCommand}"
+                                ToolTip="{loc:Tr Article_Summarize_Tip}"
+                                AutomationProperties.AutomationId="Summarize"
+                                AutomationProperties.Name="{loc:Tr Article_Summarize_Tip}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8FD;" VerticalAlignment="Center" />
+                                <TextBlock Text="{loc:Tr Article_Summarize}" FontFamily="{DynamicResource ContentControlThemeFontFamily}"
+                                           FontSize="13" Margin="6,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <ToggleButton x:Name="SummaryLanguagesButton" Content="&#xE70D;" FontSize="10" Padding="6,4"
+                                      IsChecked="{Binding IsSummaryMenuOpen}"
+                                      ToolTip="{loc:Tr Article_SummaryLanguages_Tip}"
+                                      AutomationProperties.AutomationId="SummaryLanguages"
+                                      AutomationProperties.Name="{loc:Tr Article_SummaryLanguages_Tip}" />
+                        <Popup IsOpen="{Binding IsSummaryMenuOpen}" PlacementTarget="{Binding ElementName=SummaryLanguagesButton}"
+                               Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                            <Border Padding="4" CornerRadius="6" BorderThickness="1"
+                                    Background="{DynamicResource Winnow.WindowBackground}"
+                                    BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}">
+                                <ItemsControl ItemsSource="{Binding SummaryLanguages}" IsTabStop="False"
+                                              AutomationProperties.AutomationId="SummaryLanguageList">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding Summarize}" CommandParameter="{Binding Code}"
+                                                    HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" MinWidth="150"
+                                                    Background="Transparent" BorderThickness="0" Padding="8,5"
+                                                    AutomationProperties.Name="{Binding Name}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="&#xE73E;" FontFamily="{StaticResource IconFont}" FontSize="12" Width="20"
+                                                               VerticalAlignment="Center"
+                                                               Visibility="{Binding HasSummary, Converter={StaticResource BoolToVisibility}}" />
+                                                    <TextBlock Width="20" Visibility="{Binding HasSummary, Converter={StaticResource InvertBoolToVisibility}}" />
+                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </Popup>
                     </StackPanel>
                 </DockPanel>
 
@@ -96,6 +145,57 @@
                     <TextBlock Text="{Binding VerdictText}" TextWrapping="Wrap" Opacity="0.7" FontStyle="Italic"
                                AutomationProperties.AutomationId="Verdict" />
                 </StackPanel>
+                <Border Margin="0,10,0,0" Padding="12,8" CornerRadius="6" BorderThickness="1"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                        Visibility="{Binding HasSummaryCard, Converter={StaticResource BoolToVisibility}}"
+                        AutomationProperties.AutomationId="SummaryCard">
+                    <StackPanel>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <Button Style="{StaticResource CardButton}" Content="&#xE72C;" Command="{Binding RegenerateSummaryCommand}"
+                                        ToolTip="{loc:Tr Summary_Regenerate_Tip}"
+                                        AutomationProperties.AutomationId="RegenerateSummary"
+                                        AutomationProperties.Name="{loc:Tr Summary_Regenerate_Tip}" />
+                                <Button Style="{StaticResource CardButton}" Content="&#xE8C8;" Command="{Binding CopySummaryCommand}"
+                                        ToolTip="{loc:Tr Summary_Copy_Tip}"
+                                        AutomationProperties.AutomationId="CopySummary"
+                                        AutomationProperties.Name="{loc:Tr Summary_Copy_Tip}" />
+                                <ToggleButton FontSize="12" Padding="6,2" Margin="4,0,0,0"
+                                              IsChecked="{Binding IsSummaryExpanded}"
+                                              ToolTip="{loc:Tr Summary_Collapse_Tip}"
+                                              AutomationProperties.AutomationId="ExpandSummary"
+                                              AutomationProperties.Name="{loc:Tr Summary_Collapse_Tip}">
+                                    <!-- Chevron up folds the summary away, chevron down unfolds it. -->
+                                    <ToggleButton.Style>
+                                        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                            <Setter Property="Content" Value="&#xE70E;" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter Property="Content" Value="&#xE70D;" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                            </StackPanel>
+                            <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource IconFont}" FontSize="13" VerticalAlignment="Center"
+                                       Margin="0,0,8,0" Opacity="0.8" />
+                            <TextBlock Text="{Binding SummaryHeader}" FontWeight="SemiBold" VerticalAlignment="Center"
+                                       ToolTip="{Binding SummaryOrigin}" />
+                        </DockPanel>
+                        <ProgressBar IsIndeterminate="True" Height="3" Margin="0,8,0,0"
+                                     Visibility="{Binding IsSummarizing, Converter={StaticResource BoolToVisibility}}" />
+                        <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto" Margin="0,8,0,0"
+                                      Visibility="{Binding IsSummaryExpanded, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding SummaryText}" TextWrapping="Wrap" LineHeight="21"
+                                       AutomationProperties.AutomationId="SummaryText" />
+                        </ScrollViewer>
+                        <TextBlock Text="{Binding SummaryError}" TextWrapping="Wrap" Foreground="OrangeRed" Margin="0,6,0,0"
+                                   Visibility="{Binding SummaryError.Length, Converter={StaticResource CountToVisibility}}"
+                                   AutomationProperties.AutomationId="SummaryError" />
+                    </StackPanel>
+                </Border>
                 <TextBlock Text="{Binding Summary}" Margin="0,8,0,0" TextWrapping="Wrap"
                            MaxHeight="66" TextTrimming="WordEllipsis" Opacity="0.85" />
                 <ItemsControl ItemsSource="{Binding Tags}" Margin="0,8,0,0" IsTabStop="False">

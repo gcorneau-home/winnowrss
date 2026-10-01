@@ -62,15 +62,16 @@ public sealed partial class OllamaSummarizer(HttpClient http) : IArticleSummariz
                 break;
         }
 
-        var summary = text.ToString().Trim();
+        var summary = Tidy(text.ToString());
         return summary.Length > 0 ? summary : throw new FilterResponseException("The model wrote an empty summary.");
     }
 
     internal static string SystemPrompt(string language) =>
         $"""
-        You summarize articles for a busy reader. Write in {language}, whatever the language of the article.
+        You summarize articles for a busy reader. Always write in {language}, even when the article is in another
+        language: translate what you take from it.
         Format, in plain text (no Markdown headings, no bold):
-        - first, one sentence that gives the gist of the article;
+        - first, ONE short sentence (at most 30 words) that gives the gist of the article;
         - then an empty line;
         - then 3 to 5 key points, one per line, each starting with "- ", with the facts that matter (names, numbers, dates).
         Stay faithful to the article: no opinion, nothing that is not in it, no introduction like "This article".
@@ -83,8 +84,16 @@ public sealed partial class OllamaSummarizer(HttpClient http) : IArticleSummariz
         var text = request.Text.Trim();
         if (Word().Matches(text) is { Count: > MaxWords } words)
             text = text[..words[MaxWords].Index].TrimEnd() + " […]";
-        return $"Title: {request.Title}\n\n{text}";
+        // Small models tend to drift to the article's language and to plain paragraphs: the reminder comes last.
+        return $"Title: {request.Title}\n\n{text}\n\n(Write the summary in {request.Language}: one short sentence, an empty line, then 3 to 5 lines starting with \"- \".)";
     }
+
+    /// <summary>Removes trailing spaces and keeps at most one empty line between paragraphs.</summary>
+    internal static string Tidy(string text) =>
+        BlankLines().Replace(string.Join('\n', text.ReplaceLineEndings("\n").Split('\n').Select(line => line.TrimEnd())), "\n\n").Trim();
+
+    [GeneratedRegex(@"\n{3,}")]
+    private static partial Regex BlankLines();
 
     [GeneratedRegex(@"\S+")]
     private static partial Regex Word();

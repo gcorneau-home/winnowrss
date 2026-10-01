@@ -14,6 +14,7 @@ public sealed partial class MainViewModel(
     CategoryService categories,
     FeedService feeds,
     ArticleService articles,
+    SummaryService summaries,
     FeedRefreshService refresher,
     ArchiveService archiver,
     SearchService search,
@@ -396,8 +397,9 @@ public sealed partial class MainViewModel(
                 SelectedTab = alreadyOpen;
                 return;
             }
-            var tab = new ArticleTabViewModel(details, articles, shell, loc, this);
+            var tab = new ArticleTabViewModel(details, articles, summaries, shell, loc, this);
             Tabs.Add(tab);
+            _ = tab.LoadSummariesAsync();
             SelectedTab = tab;
             MarkReadInTree(articleId);
             EnforceTabLimit();
@@ -460,12 +462,16 @@ public sealed partial class MainViewModel(
     private void CloseOtherTabs(TabViewModel? keep)
     {
         foreach (var tab in Tabs.Where(t => t != keep).ToList())
-            Tabs.Remove(tab);
+            CloseTab(tab);
         SelectedTab = keep;
     }
 
     [RelayCommand]
-    private void CloseAllTabs() => Tabs.Clear();
+    private void CloseAllTabs()
+    {
+        foreach (var tab in Tabs.ToList())
+            CloseTab(tab);
+    }
 
     /// <summary>Closes the tabs of articles that no longer exist (their feed or category was deleted).</summary>
     private void CloseTabsOfFeeds(IReadOnlyCollection<long> feedIds)
@@ -480,6 +486,7 @@ public sealed partial class MainViewModel(
         if (index < 0)
             return;
         Tabs.RemoveAt(index);
+        tab.OnClosed();
         if (SelectedTab is null && Tabs.Count > 0)
             SelectedTab = Tabs[Math.Min(index, Tabs.Count - 1)];
     }
@@ -495,8 +502,10 @@ public sealed partial class MainViewModel(
             if (ArticleTab(id) is not { } tab || await articles.OpenAsync(id) is not { } details)
                 continue;
             var wasSelected = SelectedTab == tab;
-            var fresh = new ArticleTabViewModel(details, articles, shell, loc, this);
+            var fresh = new ArticleTabViewModel(details, articles, summaries, shell, loc, this);
             Tabs[Tabs.IndexOf(tab)] = fresh;
+            tab.OnClosed();
+            _ = fresh.LoadSummariesAsync();
             if (wasSelected || SelectedTab is null)
                 SelectedTab = fresh;
         }

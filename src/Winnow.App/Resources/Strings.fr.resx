@@ -202,4 +202,12 @@
   <data name="About_Notices" xml:space="preserve"><value>Composants tiers</value></data>
   <data name="Error_SummaryUnavailable" xml:space="preserve"><value>Le résumé n’a pas pu être écrit : {0}</value></data>
   <data name="Error_SummaryNothingToSummarize" xml:space="preserve"><value>Cet article n’a pas de texte à résumer.</value></data>
+  <data name="Article_Summarize" xml:space="preserve"><value>Résumer</value></data>
+  <data name="Article_Summarize_Tip" xml:space="preserve"><value>Résumer cet article avec le modèle local</value></data>
+  <data name="Article_SummaryLanguages_Tip" xml:space="preserve"><value>Langue du résumé</value></data>
+  <data name="Summary_Header" xml:space="preserve"><value>Résumé · {0}</value></data>
+  <data name="Summary_Origin" xml:space="preserve"><value>Écrit par {0} le {1:g}</value></data>
+  <data name="Summary_Regenerate_Tip" xml:space="preserve"><value>Réécrire le résumé</value></data>
+  <data name="Summary_Copy_Tip" xml:space="preserve"><value>Copier le résumé</value></data>
+  <data name="Summary_Collapse_Tip" xml:space="preserve"><value>Afficher ou masquer le résumé</value></data>
 </root>

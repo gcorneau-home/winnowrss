@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Winnow.App.Localization;
@@ -12,6 +13,9 @@ public sealed partial class ArticleTabViewModel : TabViewModel
 {
     private readonly Article _article;
     private readonly ArticleService _articles;
+    private readonly SummaryService _summaries;
+    private readonly Dictionary<string, ArticleSummary> _savedSummaries = [];
+    private CancellationTokenSource? _summaryWork;
     private readonly IShellService _shell;
     private readonly Localizer _loc;
     private bool _isPinned;
@@ -20,11 +24,14 @@ public sealed partial class ArticleTabViewModel : TabViewModel
     private string? _filterReason;
     private string? _filterModel;
 
-    public ArticleTabViewModel(ArticleDetails details, ArticleService articles, IShellService shell, Localizer loc, ITabHost host)
+    public ArticleTabViewModel(
+        ArticleDetails details, ArticleService articles, SummaryService summaries, IShellService shell, Localizer loc, ITabHost host)
         : base(host)
     {
         _article = details.Article;
         _articles = articles;
+        _summaries = summaries;
+        SummaryLanguages = new(Localizer.Languages.Select(l => new SummaryLanguageViewModel(l.Code, l.Name, SummarizeInCommand)));
         _shell = shell;
         _loc = loc;
         _isPinned = _article.IsPinned;
@@ -126,7 +133,147 @@ public sealed partial class ArticleTabViewModel : TabViewModel
         base.RefreshTexts();
         OnPropertyChanged(nameof(MetaText));
         OnPropertyChanged(nameof(VerdictText));
+        OnPropertyChanged(nameof(SummaryHeader));
+        OnPropertyChanged(nameof(SummaryOrigin));
     }
+
+    // ----- Summary -----
+
+    /// <summary>The languages offered by the summary button, checked when a summary exists in them.</summary>
+    public ObservableCollection<SummaryLanguageViewModel> SummaryLanguages { get; }
+
+    [ObservableProperty]
+    private bool _isSummaryMenuOpen;
+
+    /// <summary>Two-letter code of the summary shown (or being written); null when there is none.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SummaryHeader), nameof(SummaryOrigin), nameof(HasSummaryCard))]
+    private string? _summaryLanguage;
+
+    /// <summary>The summary as shown: the model's "- " points become bullets.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSummaryCard))]
+    private string _summaryText = "";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSummaryCard))]
+    [NotifyCanExecuteChangedFor(nameof(SummarizeCommand), nameof(SummarizeInCommand), nameof(RegenerateSummaryCommand), nameof(CopySummaryCommand))]
+    private bool _isSummarizing;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSummaryCard))]
+    private string _summaryError = "";
+
+    [ObservableProperty]
+    private bool _isSummaryExpanded = true;
+
+    public bool HasSummaryCard => SummaryLanguage is not null;
+
+    public string SummaryHeader => SummaryLanguage is { } code ? _loc.Format("Summary_Header", LanguageName(code)) : "";
+
+    /// <summary>Which model wrote the summary shown, and when.</summary>
+    public string SummaryOrigin => SummaryLanguage is { } code && _savedSummaries.TryGetValue(code, out var s)
+        ? _loc.Format("Summary_Origin", s.Model, s.CreatedAt.ToLocalTime())
+        : "";
+
+    /// <summary>Shows the summaries saved earlier: the one in the last language asked for, else the first written.</summary>
+    public async Task LoadSummariesAsync()
+    {
+        try
+        {
+            foreach (var summary in await _summaries.GetAllAsync(ArticleId))
+                _savedSummaries[summary.Language] = summary;
+            UpdateLanguageChecks();
+            var preferred = await _summaries.GetPreferredLanguageAsync();
+            if (SummaryLanguage is null && !IsSummarizing && _savedSummaries.Count > 0)
+                Show(_savedSummaries.GetValueOrDefault(preferred ?? "") ?? _savedSummaries.Values.First());
+        }
+        catch (Exception ex)
+        {
+            Host.ReportError(ex);
+        }
+    }
+
+    /// <summary>The main part of the button: the last language asked for, else the interface's.</summary>
+    [RelayCommand(CanExecute = nameof(CanSummarize))]
+    private async Task SummarizeAsync()
+    {
+        var language = await _summaries.GetPreferredLanguageAsync() ?? _loc.Culture.TwoLetterISOLanguageName;
+        await WriteSummaryAsync(Localizer.Languages.Any(l => l.Code == language) ? language : "en");
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSummarize))]
+    private Task SummarizeInAsync(string? language)
+    {
+        IsSummaryMenuOpen = false;
+        return language is null ? Task.CompletedTask : WriteSummaryAsync(language);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSummarize))]
+    private Task RegenerateSummaryAsync() =>
+        SummaryLanguage is { } language ? WriteSummaryAsync(language) : Task.CompletedTask;
+
+    [RelayCommand(CanExecute = nameof(CanCopySummary))]
+    private void CopySummary() => _shell.CopyToClipboard(SummaryText);
+
+    private bool CanSummarize() => !IsSummarizing;
+
+    private bool CanCopySummary() => !IsSummarizing && SummaryText.Length > 0;
+
+    public override void OnClosed() => _summaryWork?.Cancel();
+
+    private async Task WriteSummaryAsync(string language)
+    {
+        _summaryWork?.Cancel();
+        using var work = _summaryWork = new CancellationTokenSource();
+        (SummaryLanguage, SummaryText, SummaryError, IsSummaryExpanded, IsSummarizing) = (language, "", "", true, true);
+        try
+        {
+            var summary = await _summaries.SummarizeAsync(
+                ArticleId, language, new Progress<string>(text => { if (!work.IsCancellationRequested) SummaryText = Display(text); }), work.Token);
+            _savedSummaries[language] = summary;
+            UpdateLanguageChecks();
+            Show(summary);
+        }
+        catch (OperationCanceledException) when (work.IsCancellationRequested)
+        {
+            // The tab was closed.
+        }
+        catch (WinnowException ex)
+        {
+            SummaryError = _loc.Error(ex);
+        }
+        catch (Exception ex)
+        {
+            SummaryError = _loc.Format("Error_OperationFailed", ex.Message);
+        }
+        finally
+        {
+            IsSummarizing = false;
+            if (_summaryWork == work)
+                _summaryWork = null;
+        }
+    }
+
+    private void Show(ArticleSummary summary)
+    {
+        SummaryLanguage = summary.Language;
+        SummaryText = Display(summary.Text);
+        SummaryError = "";
+        OnPropertyChanged(nameof(SummaryOrigin));
+    }
+
+    private void UpdateLanguageChecks()
+    {
+        foreach (var language in SummaryLanguages)
+            language.HasSummary = _savedSummaries.ContainsKey(language.Code);
+    }
+
+    private static string Display(string text) =>
+        string.Join("\n", text.ReplaceLineEndings("\n").Split('\n').Select(line => line.StartsWith("- ") ? "•  " + line[2..] : line));
+
+    private static string LanguageName(string code) =>
+        Localizer.Languages.FirstOrDefault(l => l.Code == code)?.Name ?? code;
 
     private async Task SetPinnedAsync(bool isPinned)
     {

@@ -15,6 +15,7 @@ Un lecteur RSS simple pour Windows qui **filtre les articles selon vos intérêt
 - **Flux classés par catégories**, affichés en arbre avec les articles sous chaque flux ; un glisser-déposer change un flux de catégorie.
 - **Lecture en onglets** : l'en-tête de l'article (titre, auteur, date, description, étiquettes), puis le contenu complet. Les liens s'ouvrent dans votre navigateur ; les scripts des flux ne s'exécutent jamais.
 - **Filtre d'intérêt** avec un modèle local (Ollama) : intérêts et exclusions en mots simples, mots-clés et flux de confiance comme règles, et un verdict avec sa raison pour chaque article. Les articles filtrés restent dans l'arbre, grisés, ou masqués.
+- **Résumés** à la demande, par le même modèle local : une phrase qui dit l'essentiel et 3 à 5 points clés, en français, en anglais ou en espagnol, quelle que soit la langue de l'article. Ils sont conservés avec l'article et réapparaissent quand vous le rouvrez.
 - **Archives** par catégorie (l'article et ses images sont conservés), **corbeille** récupérable, épingles, notes 👍/👎.
 - **Recherche plein texte** dans tous les articles, sans tenir compte des accents.
 - **Thèmes** : clair, sombre, celui de Windows, ou n'importe quel **thème de couleurs VS Code** depuis Open VSX ou un fichier.
@@ -63,6 +64,8 @@ Tests : `dotnet test WinnowRSS.sln --filter "Category!=UI"` (sans ce filtre, les
    - **Mots-clés** : un titre qui contient l'un d'eux (mot entier, majuscules ou non) est filtré. Pratique pour les sujets récurrents sur lesquels le modèle hésite.
    - **Flux de confiance** : jamais filtrés, tous leurs articles sont gardés.
 5. Le bouton en forme d'œil, dans la barre d'outils, affiche ou masque les articles filtrés. Survolez un article pour voir pourquoi il a été gardé ou filtré.
+
+Les **résumés** utilisent la même adresse d'Ollama et le même modèle, même quand le filtre est désactivé. **Résumer**, dans la barre d'un article, en écrit un dans la dernière langue utilisée (au début, celle de l'interface) ; la flèche à côté permet d'en choisir une autre, avec une coche pour celles déjà écrites. Un résumé prend quelques secondes une fois le modèle chargé.
 
 Conseils : gardez des critères courts et concrets ; après une modification, cochez **Refiltrer les articles non lus après l'enregistrement**. Notez les articles 👍/👎 au fil de vos lectures : le [banc d'essai du filtre](tools/Winnow.FilterBench) rejoue le filtre sur vos notes pour comparer modèles et prompts (`dotnet run --project tools/Winnow.FilterBench -- --help`).
 

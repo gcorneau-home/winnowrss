@@ -100,7 +100,7 @@ public class SummaryTests
     [Fact]
     public async Task Ollama_streams_the_summary_with_the_language_and_context_size()
     {
-        var ollama = new StreamingOllama("La batterie", " VoltaFlow Pro.\n\n- Point un", "\n- Point deux");
+        var ollama = new StreamingOllama("La batterie", " VoltaFlow Pro.\n  \n\n- Point un  ", "\n- Point deux\n");
         var partial = new List<string>();
 
         var text = await new OllamaSummarizer(new HttpClient(ollama))
@@ -112,8 +112,8 @@ public class SummaryTests
         Assert.True(ollama.LastBody!["stream"]!.GetValue<bool>());
         Assert.False(ollama.LastBody["think"]!.GetValue<bool>());
         Assert.Equal(8192, ollama.LastBody["options"]!["num_ctx"]!.GetValue<int>());
-        Assert.Contains("Write in French", ollama.LastBody["messages"]![0]!["content"]!.GetValue<string>());
-        Assert.Contains("Title: Titre\n\nUn texte.", ollama.LastBody["messages"]![1]!["content"]!.GetValue<string>());
+        Assert.Contains("Always write in French", ollama.LastBody["messages"]![0]!["content"]!.GetValue<string>());
+        Assert.StartsWith("Title: Titre\n\nUn texte.\n\n(Write the summary in French:", ollama.LastBody["messages"]![1]!["content"]!.GetValue<string>());
     }
 
     [Fact]
@@ -124,8 +124,9 @@ public class SummaryTests
         var prompt = OllamaSummarizer.UserPrompt(Request("French", text));
 
         Assert.StartsWith("Title: Titre\n\nPremier paragraphe.\n\nmot mot", prompt);
-        Assert.EndsWith(" […]", prompt);
-        Assert.Equal(OllamaSummarizer.MaxWords + 2 /* "Title:" "Titre" */ + 1 /* […] */, prompt.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length);
+        Assert.EndsWith("mot […]\n\n(Write the summary in French: one short sentence, an empty line, then 3 to 5 lines starting with \"- \".)", prompt);
+        Assert.Equal(OllamaSummarizer.MaxWords,
+            prompt.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Count(w => w is "mot" or "Premier" or "paragraphe."));
     }
 
     [Fact]

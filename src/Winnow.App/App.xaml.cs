@@ -81,6 +81,9 @@ public partial class App : Application
         // Its own client: loading a model into memory can take a minute on the first call.
         services.AddSingleton(new OllamaArticleFilter(new HttpClient { Timeout = TimeSpan.FromMinutes(3) }));
         services.AddSingleton<IArticleFilter>(sp => sp.GetRequiredService<OllamaArticleFilter>());
+        // Summaries stream: the timeout only covers the wait for the first words (the model may need loading).
+        services.AddSingleton<IArticleSummarizer>(new OllamaSummarizer(new HttpClient { Timeout = TimeSpan.FromMinutes(3) }));
+        services.AddSingleton<SummaryService>();
         services.AddSingleton<IFilterCriteriaRepository, FilterCriteriaRepository>();
         services.AddSingleton(TimeProvider.System);
 

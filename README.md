@@ -15,6 +15,7 @@ A simple RSS reader for Windows that **filters articles by interest with a langu
 - **Feeds in categories**, shown as a tree with the articles under each feed; drag and drop a feed to another category.
 - **Reading in tabs**: the article's header (title, author, date, description, tags), then the full content. Links open in your browser; feed scripts never run.
 - **Interest filter** with a local model (Ollama): interests and exclusions in plain words, keywords and trusted feeds as rules, and a verdict with its reason on every article. Filtered-out articles stay in the tree, grayed out, or hidden.
+- **Summaries** on request, by the same local model: a one-sentence gist and 3 to 5 key points, in English, French or Spanish whatever the article's language. They are saved with the article and shown again when you reopen it.
 - **Archive** per category (the article and its images are kept), **trash** that can be restored, pins, 👍/👎 ratings.
 - **Full-text search** across all articles, accent-insensitive.
 - **Themes**: light, dark, follow Windows, or any **VS Code color theme** from Open VSX or a file.
@@ -63,6 +64,8 @@ Tests: `dotnet test WinnowRSS.sln --filter "Category!=UI"` (the UI tests, withou
    - **Keywords**: a title containing one of them (whole word, any case) is filtered out. Good for recurring topics the model hesitates on.
    - **Trusted feeds**: never filtered, all their articles are kept.
 5. The eye button in the toolbar shows or hides filtered-out articles. Hover over an article to see why it was kept or filtered out.
+
+**Summaries** use the same Ollama address and model, even when filtering is off. **Summarize** in an article's toolbar writes one in the language you used last (at first, the interface's); the arrow next to it lets you pick another language, with a check mark for those already written. A summary takes a few seconds once the model is loaded.
 
 Tips: keep criteria short and concrete; check **Filter unread articles again after saving** after a change. Rate articles 👍/👎 as you read: the [filter bench](tools/Winnow.FilterBench) replays the filter over your ratings to compare models and prompts (`dotnet run --project tools/Winnow.FilterBench -- --help`).
 

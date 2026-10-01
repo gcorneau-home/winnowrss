@@ -20,6 +20,9 @@ public abstract partial class TabViewModel(ITabHost host) : ObservableObject
 {
     protected ITabHost Host { get; } = host;
 
+    /// <summary>Called once the tab is removed: stop any work still running for it.</summary>
+    public virtual void OnClosed() { }
+
     /// <summary>When the tab was last shown; the least recently used tabs close first when there are too many.</summary>
     public DateTime LastActivated { get; set; } = DateTime.UtcNow;
 

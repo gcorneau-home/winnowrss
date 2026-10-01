@@ -36,10 +36,15 @@ Published benchmarks say little about one person's interests. Instead, the user 
 
 What the bench showed: the default prompt and Qwen3 8B were good enough; most remaining errors were topics better handled by keywords (games, quizzes, podcasts), which led to the keyword and trusted-feed rules.
 
+## Summaries
+
+On request, from the article's toolbar: the same local model writes a one-sentence gist and 3 to 5 key points in the language chosen (English, French or Spanish), whatever the article's language. The answer is streamed so it appears as it is written, then saved per article and language and shown again when the article is reopened.
+
+Two lessons from trying it on real articles: Qwen3 8B tends to answer in the article's language and to drop the bullet points, so the language and the format are restated at the end of the request, right before the answer. And the filter and the summarizer ask for the same context window (8,192 tokens), since Ollama reloads the model whenever it changes.
+
 ## Considered and left for later
 
 - **Learning from 👍/👎**: an embedding per article (local multilingual embedding model) and a small classifier (logistic regression or k-nearest neighbors) to adjust the model's verdict, calling the model only for borderline cases once the classifier is reliable. Risk to manage: a filter bubble, so explicit criteria stay the floor and a small share of rejected articles should still be shown.
-- **Summaries** of articles whose feed has none.
 - **Full-text extraction** (a Readability port) for feeds that only give an excerpt.
 
 ## Existing projects looked at
