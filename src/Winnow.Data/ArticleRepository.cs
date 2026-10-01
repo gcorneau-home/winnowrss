@@ -225,8 +225,32 @@ public sealed class ArticleRepository(WinnowDatabase db) : IArticleRepository
             """, new { ids, purged = ArticleState.Purged }, tx);
         await c.ExecuteAsync("DELETE FROM article_tags WHERE article_id IN @ids", new { ids }, tx);
         await c.ExecuteAsync("DELETE FROM archived_resources WHERE article_id IN @ids", new { ids }, tx);
+        await c.ExecuteAsync("DELETE FROM article_summaries WHERE article_id IN @ids", new { ids }, tx);
         await tx.CommitAsync(ct);
         return purged;
+    }
+
+    public async Task<IReadOnlyList<ArticleSummary>> GetSummariesAsync(long articleId, CancellationToken ct = default)
+    {
+        await using var c = await db.OpenAsync(ct);
+        var rows = await c.QueryAsync<ArticleSummary>(
+            """
+            SELECT article_id AS ArticleId, language AS Language, text AS Text, model AS Model, created_at AS CreatedAt
+            FROM article_summaries WHERE article_id = @articleId ORDER BY created_at
+            """, new { articleId });
+        return rows.AsList();
+    }
+
+    public async Task SaveSummaryAsync(ArticleSummary summary, CancellationToken ct = default)
+    {
+        await using var c = await db.OpenAsync(ct);
+        await c.ExecuteAsync(
+            """
+            INSERT INTO article_summaries (article_id, language, text, model, created_at)
+            VALUES (@ArticleId, @Language, @Text, @Model, @CreatedAt)
+            ON CONFLICT (article_id, language) DO UPDATE
+            SET text = excluded.text, model = excluded.model, created_at = excluded.created_at
+            """, summary);
     }
 
     public async Task<IReadOnlyList<Article>> GetRatedAsync(CancellationToken ct = default)

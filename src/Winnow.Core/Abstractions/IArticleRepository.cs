@@ -52,6 +52,12 @@ public interface IArticleRepository
     /// </summary>
     Task<int> PurgeAsync(IReadOnlyCollection<long> ids, CancellationToken ct = default);
 
+    /// <summary>Summaries of an article, one per language, in the order they were written.</summary>
+    Task<IReadOnlyList<ArticleSummary>> GetSummariesAsync(long articleId, CancellationToken ct = default);
+
+    /// <summary>Adds a summary, replacing the article's summary in the same language.</summary>
+    Task SaveSummaryAsync(ArticleSummary summary, CancellationToken ct = default);
+
     /// <summary>Articles the user gave a thumb to (content still available), newest first.</summary>
     Task<IReadOnlyList<Article>> GetRatedAsync(CancellationToken ct = default);
 

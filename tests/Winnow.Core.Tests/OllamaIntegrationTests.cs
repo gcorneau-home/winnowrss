@@ -40,4 +40,23 @@ public class OllamaIntegrationTests
 
         Assert.True((await Judge("Firefox 157")).Keep);
     }
+
+    [OllamaFact]
+    public async Task The_default_model_summarizes_a_french_article_in_english_in_the_expected_format()
+    {
+        using var app = new TestApp();
+        var (_, feed) = await app.AddSampleFeedAsync();
+        var battery = (await app.ArticleService.GetActiveHeadlinesAsync(feed.Id)).Single(h => h.Title.StartsWith("Test de la batterie"));
+        var article = (await app.Articles.GetAsync(battery.Id))!;
+        var summarizer = new OllamaSummarizer(new HttpClient { Timeout = TimeSpan.FromMinutes(3) });
+
+        var summary = await summarizer.SummarizeAsync(new SummaryRequest(
+            FilterSettings.DefaultEndpoint, FilterSettings.DefaultModel, article.Title, article.ContentText!, "English"));
+
+        var lines = summary.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        Assert.False(lines[0].StartsWith("- "));                             // the gist comes first
+        Assert.InRange(lines.Count(l => l.StartsWith("- ")), 3, 5);          // then the key points
+        Assert.Contains("VoltaFlow", summary);
+        Assert.DoesNotContain("batterie", summary, StringComparison.OrdinalIgnoreCase); // written in English
+    }
 }

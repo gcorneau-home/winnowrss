@@ -18,6 +18,9 @@ public enum WinnowError
     ThemeNone,
     /// <summary>Args: the underlying error message.</summary>
     ThemeCatalogUnavailable,
+    /// <summary>Args: the underlying error message (Ollama unreachable, model missing...).</summary>
+    SummaryUnavailable,
+    SummaryNothingToSummarize,
 }
 
 public sealed class WinnowException(

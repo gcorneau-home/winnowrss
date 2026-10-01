@@ -200,4 +200,6 @@
   <data name="About_Repository" xml:space="preserve"><value>Source code on GitHub</value></data>
   <data name="About_LicenseLink" xml:space="preserve"><value>License</value></data>
   <data name="About_Notices" xml:space="preserve"><value>Third-party notices</value></data>
+  <data name="Error_SummaryUnavailable" xml:space="preserve"><value>The summary could not be written: {0}</value></data>
+  <data name="Error_SummaryNothingToSummarize" xml:space="preserve"><value>This article has no text to summarize.</value></data>
 </root>

@@ -46,6 +46,7 @@ public sealed class TestApp : IDisposable
         ArchiveService = new ArchiveService(Articles, Images, Time, NullLogger<ArchiveService>.Instance);
         SearchService = new SearchService(Articles);
         RetentionService = new RetentionService(Articles, RetentionPolicy.Default, Time, NullLogger<RetentionService>.Instance);
+        SummaryService = new SummaryService(Articles, Summarizer, SettingsService, Time);
     }
 
     public WinnowDatabase Database { get; }
@@ -72,6 +73,8 @@ public sealed class TestApp : IDisposable
     public ArchiveService ArchiveService { get; }
     public SearchService SearchService { get; }
     public RetentionService RetentionService { get; }
+    public SummaryService SummaryService { get; }
+    public FakeSummarizer Summarizer { get; } = new();
     public FakeResourceFetcher Images { get; } = new();
 
     /// <summary>Creates a category and subscribes to the sample feed fixture in it.</summary>
@@ -123,6 +126,24 @@ public sealed class FakeResourceFetcher : IResourceFetcher
 }
 
 /// <summary>Rejects articles whose title contains a keyword; can simulate an unreachable or confused model.</summary>
+/// <summary>Writes "Summary in {language} of {title}" in two pieces, or fails like an unreachable Ollama.</summary>
+public sealed class FakeSummarizer : IArticleSummarizer
+{
+    public bool Unavailable { get; set; }
+    public List<SummaryRequest> Requests { get; } = [];
+
+    public Task<string> SummarizeAsync(SummaryRequest request, IProgress<string>? partial = null, CancellationToken ct = default)
+    {
+        Requests.Add(request);
+        if (Unavailable)
+            throw new FilterUnavailableException("Ollama is not reachable: connection refused");
+        var text = $"Summary in {request.Language} of {request.Title}";
+        partial?.Report(text[..10]);
+        partial?.Report(text);
+        return Task.FromResult(text);
+    }
+}
+
 public sealed class FakeArticleFilter : IArticleFilter
 {
     public Dictionary<string, string> RejectKeywords { get; } = new(StringComparer.OrdinalIgnoreCase);

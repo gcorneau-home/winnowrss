@@ -20,6 +20,7 @@ public sealed class SettingsService(ISettingsRepository settings)
     private const string RejectedCuesKey = "ui.rejectedCues";
     private const string ArticleZoomKey = "ui.articleZoom";
     private const string HideReadKey = "view.hideRead";
+    private const string SummaryLanguageKey = "summary.language";
 
     /// <summary>Two-letter language code of the interface, or null if never chosen.</summary>
     public Task<string?> GetUiLanguageAsync(CancellationToken ct = default) => settings.GetAsync(UiLanguageKey, ct);
@@ -85,6 +86,12 @@ public sealed class SettingsService(ISettingsRepository settings)
 
     public Task SetHideRejectedAsync(bool hide, CancellationToken ct = default) =>
         settings.SetAsync(HideRejectedKey, hide ? "true" : "false", ct);
+
+    /// <summary>The language of the last summary asked for (two-letter code), or null.</summary>
+    public Task<string?> GetSummaryLanguageAsync(CancellationToken ct = default) => settings.GetAsync(SummaryLanguageKey, ct);
+
+    public Task SetSummaryLanguageAsync(string languageCode, CancellationToken ct = default) =>
+        settings.SetAsync(SummaryLanguageKey, languageCode, ct);
 
     public async Task<bool> GetHideReadAsync(CancellationToken ct = default) =>
         await settings.GetAsync(HideReadKey, ct) == "true";
