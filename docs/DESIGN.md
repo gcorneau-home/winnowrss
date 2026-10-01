@@ -9,9 +9,9 @@ The project also had a second goal: **no line of code written by hand.** The aut
 ## Requirements and decisions
 
 - **Native Windows UI**, not a web app: WPF on .NET, in C#.
-- **Local model only.** Articles never leave the machine. Ollama serves the model over a local HTTP API; Qwen3 8B is the default (good in English and French, fits in about 8 GB of video memory, a few seconds per article).
+- **Local model only.** Articles never leave the machine. Ollama serves the model over a local HTTP API; Qwen3 8B is the default (good in English and French, fits in 8 GB of video memory with an 8,192-token context, a few seconds per article).
 - **Low tolerance for wrong rejections.** A filtered-out article stays in its feed, grayed out (or hidden on demand), with the reason. Nothing goes to the trash automatically.
-- **Mixed English and French feeds**, and an interface that switches between the two languages live.
+- **Mixed English and French feeds**, and an interface that switches language live (English, French, and Spanish to prove the localization holds).
 - **Explicit criteria first.** The user writes interests and exclusions in plain words; the model applies them. Learning from 👍/👎 comes later, on top of that, not instead of it.
 
 ## Architecture

@@ -4,7 +4,7 @@
 
 **English** · [Français](README.fr.md)
 
-A simple RSS reader for Windows that **filters articles by interest with a language model running on your own PC**. You describe what you care about and what you don't, in plain words; articles that don't match are set aside with the reason, never deleted.
+A simple RSS reader for Windows that **filters articles by interest with a language model running on your own PC**. You describe what you care about and what you don't, in plain words; articles that don't match are set aside with the reason, never deleted. The same model can also summarize an article for you, in the language of your choice.
 
 > Built with [Claude Code](https://claude.com/claude-code): the author's challenge was to write **no line of code by hand**. Design, code, tests, icon and documentation were all produced by the AI agent, with the author deciding and testing. See [docs/DESIGN.md](docs/DESIGN.md).
 
@@ -20,14 +20,14 @@ A simple RSS reader for Windows that **filters articles by interest with a langu
 - **Full-text search** across all articles, accent-insensitive.
 - **Themes**: light, dark, follow Windows, or any **VS Code color theme** from Open VSX or a file.
 - Interface in **English, French and Spanish**, switched live.
-- **Settings**: open articles with a single or double click, how unread and filtered-out articles stand out, maximum number of open tabs, default zoom.
+- **Settings**: open articles with a single or double click, how unread and filtered-out articles stand out, maximum number of open tabs, default zoom; the About box (version and credits) is at the bottom.
 - Feeds refresh every 30 minutes. Read articles and the trash are purged after 30 days, except pinned, rated and archived ones.
 
 ## Requirements
 
 - Windows 10 or 11, 64-bit.
 - The **Microsoft Edge WebView2 Runtime**, already installed on Windows 11 and on most Windows 10 machines ([download](https://developer.microsoft.com/microsoft-edge/webview2/)).
-- For the filter (optional): [Ollama](https://ollama.com) and the `qwen3:8b` model, which needs about 6 GB of memory on the graphics card (it also runs on the processor, more slowly).
+- For the filter and the summaries (optional): [Ollama](https://ollama.com) and the `qwen3:8b` model, which needs about 7 GB of memory on the graphics card (it also runs on the processor, more slowly).
 
 ## Install
 

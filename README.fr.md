@@ -4,7 +4,7 @@
 
 [English](README.md) · **Français**
 
-Un lecteur RSS simple pour Windows qui **filtre les articles selon vos intérêts avec un modèle de langue qui tourne sur votre propre PC**. Vous décrivez en mots simples ce qui vous intéresse et ce qui ne vous intéresse pas ; les articles qui ne correspondent pas sont mis de côté avec la raison, jamais supprimés.
+Un lecteur RSS simple pour Windows qui **filtre les articles selon vos intérêts avec un modèle de langue qui tourne sur votre propre PC**. Vous décrivez en mots simples ce qui vous intéresse et ce qui ne vous intéresse pas ; les articles qui ne correspondent pas sont mis de côté avec la raison, jamais supprimés. Le même modèle peut aussi vous résumer un article, dans la langue de votre choix.
 
 > Construit avec [Claude Code](https://claude.com/claude-code) : l'auteur s'était fixé le défi de **n'écrire aucune ligne de code à la main**. Conception, code, tests, icône et documentation ont tous été produits par l'agent d'IA ; l'auteur décidait et testait. Voir [docs/DESIGN.md](docs/DESIGN.md) (en anglais).
 
@@ -20,14 +20,14 @@ Un lecteur RSS simple pour Windows qui **filtre les articles selon vos intérêt
 - **Recherche plein texte** dans tous les articles, sans tenir compte des accents.
 - **Thèmes** : clair, sombre, celui de Windows, ou n'importe quel **thème de couleurs VS Code** depuis Open VSX ou un fichier.
 - Interface en **anglais, français et espagnol**, qui change de langue en direct.
-- **Réglages** : ouvrir les articles d'un clic simple ou double, façon de signaler les articles non lus et filtrés, nombre maximum d'onglets ouverts, zoom par défaut.
+- **Réglages** : ouvrir les articles d'un clic simple ou double, façon de signaler les articles non lus et filtrés, nombre maximum d'onglets ouverts, zoom par défaut ; la boîte À propos (version et crédits) est en bas.
 - Les flux s'actualisent toutes les 30 minutes. Les articles lus et la corbeille sont purgés après 30 jours, sauf les articles épinglés, notés et archivés.
 
 ## Prérequis
 
 - Windows 10 ou 11, 64 bits.
 - Le **runtime Microsoft Edge WebView2**, déjà présent sur Windows 11 et sur la plupart des Windows 10 ([téléchargement](https://developer.microsoft.com/microsoft-edge/webview2/)).
-- Pour le filtre (facultatif) : [Ollama](https://ollama.com) et le modèle `qwen3:8b`, qui demande environ 6 Go de mémoire sur la carte graphique (il tourne aussi sur le processeur, plus lentement).
+- Pour le filtre et les résumés (facultatif) : [Ollama](https://ollama.com) et le modèle `qwen3:8b`, qui demande environ 7 Go de mémoire sur la carte graphique (il tourne aussi sur le processeur, plus lentement).
 
 ## Installation
 
