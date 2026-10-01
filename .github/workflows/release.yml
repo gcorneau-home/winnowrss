@@ -1,0 +1,42 @@
+name: Release
+
+# Push a tag such as v0.1.0 to build the app and attach a zip to a GitHub release.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Test
+        run: dotnet test WinnowRSS.sln -c Release --filter "Category!=UI"
+
+      - name: Publish
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          dotnet publish src/Winnow.App/Winnow.App.csproj -c Release -r win-x64 --self-contained true \
+            -p:Version="$version" -p:DebugType=none -o publish/WinnowRSS
+          cp LICENSE THIRD-PARTY-NOTICES.md publish/WinnowRSS/
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Zip
+        shell: pwsh
+        run: Compress-Archive -Path publish/WinnowRSS -DestinationPath "WinnowRSS-$env:VERSION-win-x64.zip"
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "WinnowRSS-$VERSION-win-x64.zip" --title "WinnowRSS $VERSION" --generate-notes

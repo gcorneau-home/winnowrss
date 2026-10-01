@@ -1,0 +1,11 @@
+<Project>
+
+  <!-- Shared by every project. The release workflow overrides Version from the git tag (v1.2.3 -> 1.2.3). -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Product>WinnowRSS</Product>
+    <Authors>Gaétan Corneau</Authors>
+    <Copyright>Copyright (c) 2026 Gaétan Corneau</Copyright>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+<UserControl x:Class="Winnow.App.Views.SearchResultsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Winnow.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:SearchTabViewModel}">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding Summary}" Margin="20,14,20,10" Opacity="0.75" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Results}" Margin="12,0,12,12" IsTabStop="False">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type vm:SearchResultViewModel}">
+                        <!-- Each result is a button: click, Enter/Space or UI Automation Invoke opens the article. -->
+                        <Button Command="{Binding OpenCommand}" Margin="0,0,0,6" Padding="10,8"
+                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                Background="Transparent" BorderThickness="0"
+                                AutomationProperties.Name="{Binding Title}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.65" Margin="0,2,0,0" />
+                                <TextBlock Text="{Binding Snippet}" TextWrapping="Wrap" Opacity="0.85" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

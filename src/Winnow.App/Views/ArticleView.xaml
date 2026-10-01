@@ -1,0 +1,125 @@
+<UserControl x:Class="Winnow.App.Views.ArticleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Winnow.App.ViewModels"
+             xmlns:loc="clr-namespace:Winnow.App.Localization"
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:ArticleTabViewModel}"
+             PreviewKeyDown="View_PreviewKeyDown">
+
+    <UserControl.Resources>
+        <Style x:Key="ArticleToolButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="0,0,4,0" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontFamily" Value="{StaticResource IconFont}" />
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+            <Setter Property="Margin" Value="0,0,4,0" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontFamily" Value="{StaticResource IconFont}" />
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Padding="20,12,20,12" BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}">
+            <StackPanel>
+                <!-- Actions -->
+                <DockPanel Margin="0,0,0,10">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <TextBlock x:Name="MatchText" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.7" />
+                        <Grid Width="260">
+                            <TextBox x:Name="FindBox" KeyDown="FindBox_KeyDown"
+                                     AutomationProperties.AutomationId="FindInArticle"
+                                     AutomationProperties.Name="{loc:Tr Article_Find_Placeholder}" />
+                            <TextBlock Text="{loc:Tr Article_Find_Placeholder}" IsHitTestVisible="False"
+                                       Margin="12,0,0,0" VerticalAlignment="Center" Opacity="0.5">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=FindBox}" Value="">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton Content="&#xE718;" IsChecked="{Binding IsPinned}"
+                                      ToolTip="{loc:Tr Article_Pin_Tip}"
+                                      AutomationProperties.AutomationId="Pin"
+                                      AutomationProperties.Name="{loc:Tr Article_Pin_Tip}" />
+                        <ToggleButton Content="&#xE8E1;" IsChecked="{Binding IsThumbUp}"
+                                      ToolTip="{loc:Tr Article_ThumbUp_Tip}"
+                                      AutomationProperties.AutomationId="ThumbUp"
+                                      AutomationProperties.Name="{loc:Tr Article_ThumbUp_Tip}" />
+                        <ToggleButton Content="&#xE8E0;" IsChecked="{Binding IsThumbDown}"
+                                      ToolTip="{loc:Tr Article_ThumbDown_Tip}"
+                                      AutomationProperties.AutomationId="ThumbDown"
+                                      AutomationProperties.Name="{loc:Tr Article_ThumbDown_Tip}" />
+                        <Button Style="{StaticResource ArticleToolButton}" Content="&#xE7B8;" Command="{Binding ArchiveCommand}"
+                                ToolTip="{loc:Tr Article_Archive_Tip}"
+                                AutomationProperties.AutomationId="Archive"
+                                AutomationProperties.Name="{loc:Tr Article_Archive_Tip}" />
+                        <Button Style="{StaticResource ArticleToolButton}" Content="&#xE74D;" Command="{Binding DeleteCommand}"
+                                Visibility="{Binding IsTrashed, Converter={StaticResource InvertBoolToVisibility}}"
+                                ToolTip="{loc:Tr Article_Delete_Tip}"
+                                AutomationProperties.AutomationId="Delete"
+                                AutomationProperties.Name="{loc:Tr Article_Delete_Tip}" />
+                        <Button Style="{StaticResource ArticleToolButton}" Content="&#xE7A7;" Command="{Binding RestoreCommand}"
+                                Visibility="{Binding IsTrashed, Converter={StaticResource BoolToVisibility}}"
+                                ToolTip="{loc:Tr Article_Restore_Tip}"
+                                AutomationProperties.AutomationId="Restore"
+                                AutomationProperties.Name="{loc:Tr Article_Restore_Tip}" />
+                        <Button Style="{StaticResource ArticleToolButton}" Content="&#xE8A7;" Command="{Binding OpenInBrowserCommand}"
+                                ToolTip="{loc:Tr Article_OpenInBrowser_Tip}"
+                                AutomationProperties.AutomationId="OpenInBrowser"
+                                AutomationProperties.Name="{loc:Tr Article_OpenInBrowser_Tip}" />
+                    </StackPanel>
+                </DockPanel>
+
+                <!-- Header -->
+                <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding MetaText}" Margin="0,4,0,0" Opacity="0.7" />
+                <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
+                            Visibility="{Binding VerdictText.Length, Converter={StaticResource CountToVisibility}}">
+                    <TextBlock Text="&#xE71C;" FontFamily="{StaticResource IconFont}" FontSize="12" VerticalAlignment="Center"
+                               Margin="0,0,6,0" Opacity="0.7" />
+                    <TextBlock Text="{Binding VerdictText}" TextWrapping="Wrap" Opacity="0.7" FontStyle="Italic"
+                               AutomationProperties.AutomationId="Verdict" />
+                </StackPanel>
+                <TextBlock Text="{Binding Summary}" Margin="0,8,0,0" TextWrapping="Wrap"
+                           MaxHeight="66" TextTrimming="WordEllipsis" Opacity="0.85" />
+                <ItemsControl ItemsSource="{Binding Tags}" Margin="0,8,0,0" IsTabStop="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Translucent gray reads well on both light and dark themes. -->
+                            <Border Margin="0,0,6,4" Padding="8,2" CornerRadius="10" Background="#33808080">
+                                <TextBlock Text="{Binding}" FontSize="12" Opacity="0.85" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <Grid>
+            <wv2:WebView2 x:Name="Browser" />
+            <TextBlock x:Name="BrowserError" Visibility="Collapsed" TextWrapping="Wrap" Margin="20"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: dotnet build WinnowRSS.sln -c Release
+
+      # The UI tests open windows and drive them; they are meant for a developer's desktop, not a CI runner.
+      - name: Test
+        run: dotnet test WinnowRSS.sln -c Release --no-build --filter "Category!=UI"

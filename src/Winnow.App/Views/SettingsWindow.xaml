@@ -1,0 +1,140 @@
+<Window x:Class="Winnow.App.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Winnow.App.ViewModels"
+        xmlns:loc="clr-namespace:Winnow.App.Localization"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+        Title="{loc:Tr SettingsWindow_Title}"
+        Width="620" SizeToContent="Height" ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource Winnow.WindowBackground}"
+        AutomationProperties.AutomationId="SettingsWindow">
+
+    <Window.Resources>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,14,0,6" />
+        </Style>
+        <Style x:Key="Option" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+            <Setter Property="Margin" Value="0,0,16,4" />
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="20">
+        <!-- Reading -->
+        <TextBlock Text="{loc:Tr Settings_Reading}" Style="{StaticResource SectionTitle}" Margin="0,0,0,6" />
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock Text="{loc:Tr Settings_OpenWith}" VerticalAlignment="Center" Margin="0,0,12,0" />
+            <RadioButton Content="{loc:Tr Settings_DoubleClick}" IsChecked="{Binding OpenOnDoubleClick}" Margin="0,0,16,0"
+                         AutomationProperties.AutomationId="OpenOnDoubleClick" />
+            <RadioButton Content="{loc:Tr Settings_SingleClick}" IsChecked="{Binding OpenOnSingleClick}"
+                         AutomationProperties.AutomationId="OpenOnSingleClick" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{loc:Tr Settings_MaxTabs}" VerticalAlignment="Center" Margin="0,0,12,0" />
+            <TextBox Text="{Binding MaxOpenTabs, UpdateSourceTrigger=PropertyChanged}" Width="70"
+                     AutomationProperties.AutomationId="MaxOpenTabs"
+                     AutomationProperties.Name="{loc:Tr Settings_MaxTabs}" />
+        </StackPanel>
+        <TextBlock Text="{loc:Tr Settings_MaxTabs_Help}" Margin="0,4,0,8" Opacity="0.7" TextWrapping="Wrap" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{loc:Tr Settings_Zoom}" VerticalAlignment="Center" Margin="0,0,12,0" />
+            <ComboBox ItemsSource="{Binding ZoomLevels}" SelectedItem="{Binding ArticleZoom}" ItemStringFormat="{}{0} %" MinWidth="100"
+                      AutomationProperties.AutomationId="ArticleZoom"
+                      AutomationProperties.Name="{loc:Tr Settings_Zoom}" />
+        </StackPanel>
+        <TextBlock Text="{loc:Tr Settings_Zoom_Help}" Margin="0,4,0,0" Opacity="0.7" TextWrapping="Wrap" />
+
+        <!-- Display -->
+        <TextBlock Text="{loc:Tr Settings_UnreadCues}" Style="{StaticResource SectionTitle}" />
+        <WrapPanel>
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_Bold}" IsChecked="{Binding UnreadBold}" AutomationProperties.AutomationId="UnreadBold" />
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_Dot}" IsChecked="{Binding UnreadDot}" AutomationProperties.AutomationId="UnreadDot" />
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_DimRead}" IsChecked="{Binding DimRead}" AutomationProperties.AutomationId="DimRead" />
+        </WrapPanel>
+
+        <TextBlock Text="{loc:Tr Settings_RejectedCues}" Style="{StaticResource SectionTitle}" />
+        <WrapPanel>
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_Dimmed}" IsChecked="{Binding RejectedDimmed}" AutomationProperties.AutomationId="RejectedDimmed" />
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_Italic}" IsChecked="{Binding RejectedItalic}" AutomationProperties.AutomationId="RejectedItalic" />
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_Icon}" IsChecked="{Binding RejectedIcon}" AutomationProperties.AutomationId="RejectedIcon" />
+            <CheckBox Style="{StaticResource Option}" Content="{loc:Tr Settings_Cue_Strikethrough}" IsChecked="{Binding RejectedStrikethrough}" AutomationProperties.AutomationId="RejectedStrikethrough" />
+        </WrapPanel>
+
+        <!-- Preview: the same cues as the tree, driven by this window's (unsaved) choices. -->
+        <TextBlock Text="{loc:Tr Settings_Preview}" Style="{StaticResource SectionTitle}" />
+        <Border Padding="12,8" CornerRadius="6" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="1">
+            <StackPanel>
+                <!-- Unread -->
+                <DockPanel Margin="0,2">
+                    <Ellipse Width="8" Height="8" Margin="0,0,8,0" VerticalAlignment="Center" Fill="{DynamicResource AccentFillColorDefaultBrush}"
+                             Visibility="{Binding UnreadDot, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock Text="{loc:Tr Settings_Preview_Unread}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UnreadBold}" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </DockPanel>
+                <!-- Read -->
+                <TextBlock Text="{loc:Tr Settings_Preview_Read}" Margin="0,2">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DimRead}" Value="True">
+                                    <Setter Property="Opacity" Value="0.55" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <!-- Filtered out -->
+                <DockPanel Margin="0,2">
+                    <TextBlock Text="&#xE71C;" FontFamily="{StaticResource IconFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" Opacity="0.7"
+                               Visibility="{Binding RejectedIcon, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock Text="{loc:Tr Settings_Preview_Rejected}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RejectedDimmed}" Value="True">
+                                        <Setter Property="Opacity" Value="0.45" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RejectedItalic}" Value="True">
+                                        <Setter Property="FontStyle" Value="Italic" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RejectedStrikethrough}" Value="True">
+                                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer -->
+        <DockPanel Margin="0,18,0,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="{loc:Tr Dialog_Save}" Command="{Binding SaveCommand}" IsDefault="True" MinWidth="100" Margin="0,0,8,0"
+                        AutomationProperties.AutomationId="SaveSettings" />
+                <Button Content="{loc:Tr Dialog_Cancel}" Command="{Binding CancelCommand}" IsCancel="True" MinWidth="100"
+                        AutomationProperties.AutomationId="CancelSettings" />
+            </StackPanel>
+            <TextBlock VerticalAlignment="Center" Opacity="0.6">
+                <Run Text="WinnowRSS" /> <Run Text="{Binding Version, Mode=OneWay}" />
+            </TextBlock>
+        </DockPanel>
+    </StackPanel>
+</Window>

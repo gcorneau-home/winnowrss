@@ -1,0 +1,109 @@
+<Window x:Class="Winnow.App.Views.ThemesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Winnow.App.ViewModels"
+        xmlns:loc="clr-namespace:Winnow.App.Localization"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:ThemesViewModel}"
+        Title="{loc:Tr ThemesWindow_Title}"
+        Width="720" Height="760" MinWidth="560" MinHeight="480"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource Winnow.WindowBackground}"
+        AutomationProperties.AutomationId="ThemesWindow">
+
+    <Window.Resources>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,16,0,6" />
+        </Style>
+        <Style x:Key="Swatch" TargetType="Border">
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Margin" Value="0,0,3,0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#40808080" />
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Margin="20">
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+            <Button DockPanel.Dock="Right" Content="{loc:Tr Dialog_Close}" IsCancel="True" MinWidth="100"
+                    AutomationProperties.AutomationId="CloseThemes" />
+            <TextBlock Text="{Binding Status}" TextWrapping="Wrap" VerticalAlignment="Center" Opacity="0.8"
+                       AutomationProperties.AutomationId="ThemesStatus" />
+        </DockPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0">
+            <StackPanel>
+                <!-- Installed -->
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="{loc:Tr Themes_Import}" Command="{Binding ImportFileCommand}"
+                            AutomationProperties.AutomationId="ImportTheme" />
+                    <TextBlock Text="{loc:Tr Themes_InstalledTitle}" Style="{StaticResource SectionTitle}" Margin="0,0,0,6" />
+                </DockPanel>
+                <TextBlock Text="{loc:Tr Themes_NoneInstalled}" Opacity="0.7" TextWrapping="Wrap"
+                           Visibility="{Binding Installed.Count, Converter={StaticResource CountToVisibility}, ConverterParameter=Invert}" />
+                <ItemsControl ItemsSource="{Binding Installed}" IsTabStop="False" AutomationProperties.AutomationId="InstalledThemes">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:InstalledThemeViewModel}">
+                            <DockPanel Margin="0,0,0,6">
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                    <Button Content="{loc:Tr Themes_Apply}" Margin="0,0,6,0"
+                                            Command="{Binding DataContext.ApplyCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}" AutomationProperties.Name="{Binding Name}" />
+                                    <Button Content="&#xE74D;" FontFamily="{StaticResource IconFont}"
+                                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}" ToolTip="{loc:Tr Themes_Delete}"
+                                            AutomationProperties.Name="{loc:Tr Themes_Delete}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border Style="{StaticResource Swatch}" Background="{Binding Background}" />
+                                    <Border Style="{StaticResource Swatch}" Background="{Binding Surface}" />
+                                    <Border Style="{StaticResource Swatch}" Background="{Binding Foreground}" />
+                                    <Border Style="{StaticResource Swatch}" Background="{Binding Accent}" Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Source}" Opacity="0.6" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Catalog -->
+                <TextBlock Text="{loc:Tr Themes_CatalogTitle}" Style="{StaticResource SectionTitle}" />
+                <TextBlock Text="{loc:Tr Themes_CatalogHelp}" Opacity="0.7" TextWrapping="Wrap" Margin="0,0,0,8" />
+                <DockPanel Margin="0,0,0,10">
+                    <Button DockPanel.Dock="Right" Content="{loc:Tr Toolbar_Search_Tip}" Command="{Binding SearchCommand}" Margin="8,0,0,0"
+                            AutomationProperties.AutomationId="SearchThemes" />
+                    <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                             AutomationProperties.AutomationId="ThemeQuery"
+                             AutomationProperties.Name="{loc:Tr Themes_CatalogTitle}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </DockPanel>
+                <ItemsControl ItemsSource="{Binding Results}" IsTabStop="False" AutomationProperties.AutomationId="ThemeResults">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:CatalogThemeViewModel}">
+                            <DockPanel Margin="0,0,0,10">
+                                <Button DockPanel.Dock="Right" Content="{loc:Tr Themes_Install}" Command="{Binding InstallCommand}"
+                                        VerticalAlignment="Top" AutomationProperties.Name="{Binding Name}" />
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.6" />
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Opacity="0.85" Margin="0,2,0,0" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

@@ -1,0 +1,20 @@
+<Application x:Class="Winnow.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:Winnow.App.Converters"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- The Windows 11 Fluent theme (light, dark or system) is applied by ThemeService through Application.ThemeMode. -->
+            <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+            <conv:CountToVisibilityConverter x:Key="CountToVisibility" />
+            <conv:SubtractConverter x:Key="Subtract" />
+            <SolidColorBrush x:Key="Winnow.WindowBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="Winnow.HeaderBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="Winnow.SurfaceBackground" Color="Transparent" />
+            <SolidColorBrush x:Key="Winnow.MultiSelectBrush" Color="#400078D4" />
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+            <conv:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibility" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
