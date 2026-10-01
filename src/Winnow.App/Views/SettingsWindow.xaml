@@ -132,8 +132,10 @@
                 <Button Content="{loc:Tr Dialog_Cancel}" Command="{Binding CancelCommand}" IsCancel="True" MinWidth="100"
                         AutomationProperties.AutomationId="CancelSettings" />
             </StackPanel>
-            <TextBlock VerticalAlignment="Center" Opacity="0.6">
-                <Run Text="WinnowRSS" /> <Run Text="{Binding Version, Mode=OneWay}" />
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink Command="{Binding ShowAboutCommand}" AutomationProperties.AutomationId="About">
+                    <Run Text="{loc:Tr Settings_About}" />
+                </Hyperlink>
             </TextBlock>
         </DockPanel>
     </StackPanel>

@@ -434,7 +434,7 @@ public sealed partial class MainViewModel(
     [RelayCommand]
     private async Task OpenSettingsAsync()
     {
-        var window = new SettingsViewModel(settings, DisplaySettings.Instance);
+        var window = new SettingsViewModel(settings, DisplaySettings.Instance, () => dialogs.ShowAbout(new AboutViewModel(shell)));
         await window.LoadAsync();
         if (dialogs.ShowSettings(window))
             EnforceTabLimit();

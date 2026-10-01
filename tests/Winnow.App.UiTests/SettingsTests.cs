@@ -87,6 +87,23 @@ public class SettingsTests
         AppSession.WaitUntil(() => app.TryTreeItem(Battery) is not null, "the read article is back");
     }
 
+    [Fact]
+    public void The_about_box_opens_from_the_settings_and_shows_the_version()
+    {
+        using var app = new AppSession();
+        app.Invoke("Settings");
+        var settings = app.Dialog("SettingsWindow");
+        AppSession.Find(settings, "About").Patterns.Invoke.Pattern.Invoke();
+
+        var about = AppSession.WaitFor(() => settings.FindFirstChild(cf => cf.ByAutomationId("AboutWindow"))
+            ?? app.Window.FindFirstDescendant(cf => cf.ByAutomationId("AboutWindow")), "the about box");
+        Assert.Matches(@"\d+\.\d+\.\d+", AppSession.Find(about, "AboutVersion").Name);
+        Assert.NotNull(about.FindFirstDescendant(cf => cf.ByName("Claude Code", FlaUI.Core.Definitions.PropertyConditionFlags.MatchSubstring)));
+
+        AppSession.Find(about, "CloseAbout").Patterns.Invoke.Pattern.Invoke();
+        AppSession.WaitUntil(() => settings.FindFirstChild(cf => cf.ByAutomationId("AboutWindow")) is null, "the about box closes");
+    }
+
     private static void Configure(AppSession app, Action<AutomationElement> change)
     {
         app.Invoke("Settings");

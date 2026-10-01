@@ -18,6 +18,8 @@ public interface IDialogService
 
     bool ShowSettings(ViewModels.SettingsViewModel viewModel);
 
+    void ShowAbout(ViewModels.AboutViewModel viewModel);
+
     void ShowThemes(ViewModels.ThemesViewModel viewModel);
 
     /// <summary>Shows the Filter window; true if the user saved.</summary>

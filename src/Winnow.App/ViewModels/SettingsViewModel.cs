@@ -1,4 +1,3 @@
-using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Winnow.App.Services;
@@ -10,7 +9,7 @@ namespace Winnow.App.ViewModels;
 /// <summary>
 /// The Settings window. Choices are previewed in the window and applied to the whole app (and saved) on Save.
 /// </summary>
-public sealed partial class SettingsViewModel(SettingsService settings, DisplaySettings display) : ObservableObject
+public sealed partial class SettingsViewModel(SettingsService settings, DisplaySettings display, Action showAbout) : ObservableObject
 {
     [ObservableProperty] private bool _openOnSingleClick;
     [ObservableProperty] private string _maxOpenTabs = "";
@@ -33,8 +32,8 @@ public sealed partial class SettingsViewModel(SettingsService settings, DisplayS
 
     partial void OnOpenOnSingleClickChanged(bool value) => OnPropertyChanged(nameof(OpenOnDoubleClick));
 
-    public string Version =>
-        typeof(SettingsViewModel).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "";
+    [RelayCommand]
+    private void ShowAbout() => showAbout();
 
     /// <summary>Raised with true after saving, false on cancel; the window closes itself.</summary>
     public event Action<bool>? CloseRequested;

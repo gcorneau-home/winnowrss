@@ -188,4 +188,16 @@
   <data name="Toolbar_ShowRead_Tip" xml:space="preserve"><value>Afficher les articles lus</value></data>
   <data name="Settings_Zoom" xml:space="preserve"><value>Zoom des articles</value></data>
   <data name="Settings_Zoom_Help" xml:space="preserve"><value>Ctrl + molette de la souris zoome encore ponctuellement dans un article</value></data>
+  <data name="Settings_About" xml:space="preserve"><value>À propos de WinnowRSS</value></data>
+  <data name="AboutWindow_Title" xml:space="preserve"><value>À propos de WinnowRSS</value></data>
+  <data name="About_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="About_Description" xml:space="preserve"><value>Un lecteur RSS simple qui filtre les articles selon vos intérêts avec un modèle de langue qui tourne sur votre propre PC.</value></data>
+  <data name="About_CreditsTitle" xml:space="preserve"><value>Crédits</value></data>
+  <data name="About_CreatedBy" xml:space="preserve"><value>Créé par Gaétan Corneau.</value></data>
+  <data name="About_BuiltWith" xml:space="preserve"><value>Construit avec Claude Code, l'agent de programmation d'Anthropic : chaque ligne de code a été écrite par Claude, aucune à la main. Merci, mon pote !</value></data>
+  <data name="About_Thanks" xml:space="preserve"><value>Merci aussi aux auteurs de .NET et WPF, CommunityToolkit.Mvvm, Dapper, SQLite, Microsoft WebView2, Ollama et des modèles Qwen, et des thèmes VS Code d'Open VSX.</value></data>
+  <data name="About_License" xml:space="preserve"><value>Logiciel libre sous licence MIT.</value></data>
+  <data name="About_Repository" xml:space="preserve"><value>Code source sur GitHub</value></data>
+  <data name="About_LicenseLink" xml:space="preserve"><value>Licence</value></data>
+  <data name="About_Notices" xml:space="preserve"><value>Composants tiers</value></data>
 </root>

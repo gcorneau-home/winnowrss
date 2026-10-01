@@ -28,6 +28,14 @@ public sealed class DialogService : IDialogService
     public bool ShowSettings(ViewModels.SettingsViewModel viewModel) =>
         new SettingsWindow(viewModel) { Owner = Owner }.ShowDialog() == true;
 
+    // Opened from a link in the Settings window, so it belongs to whichever window is active. It is shown once the
+    // click has returned: a hyperlink's click (and UI Automation's Invoke on it) would otherwise wait for it to close.
+    public void ShowAbout(ViewModels.AboutViewModel viewModel)
+    {
+        var owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive) ?? Owner;
+        Application.Current.Dispatcher.InvokeAsync(() => new AboutWindow(viewModel) { Owner = owner }.ShowDialog());
+    }
+
     public void ShowThemes(ViewModels.ThemesViewModel viewModel) =>
         new ThemesWindow(viewModel) { Owner = Owner }.ShowDialog();
 

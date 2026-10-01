@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Resource Include="..\..\assets\icon\winnow.ico" Link="Assets\winnow.ico" />
+    <Resource Include="..\..\assets\icon\winnow-128.png" Link="Assets\winnow-128.png" />
   </ItemGroup>
 
 </Project>
