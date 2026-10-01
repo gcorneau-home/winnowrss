@@ -32,6 +32,7 @@ public sealed class Localizer : INotifyPropertyChanged
     [
         new("en", "English"),
         new("fr", "Français"),
+        new("es", "Español"),
     ];
 
     private Localizer() { }

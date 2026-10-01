@@ -18,7 +18,7 @@ Un lecteur RSS simple pour Windows qui **filtre les articles selon vos intérêt
 - **Archives** par catégorie (l'article et ses images sont conservés), **corbeille** récupérable, épingles, notes 👍/👎.
 - **Recherche plein texte** dans tous les articles, sans tenir compte des accents.
 - **Thèmes** : clair, sombre, celui de Windows, ou n'importe quel **thème de couleurs VS Code** depuis Open VSX ou un fichier.
-- Interface en **anglais et en français**, qui change de langue en direct.
+- Interface en **anglais, français et espagnol**, qui change de langue en direct.
 - **Réglages** : ouvrir les articles d'un clic simple ou double, façon de signaler les articles non lus et filtrés, nombre maximum d'onglets ouverts, zoom par défaut.
 - Les flux s'actualisent toutes les 30 minutes. Les articles lus et la corbeille sont purgés après 30 jours, sauf les articles épinglés, notés et archivés.
 

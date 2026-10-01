@@ -156,6 +156,19 @@ public class ReaderTests
         AppSession.WaitUntil(() => app.ById("AddCategory").Name == before, "the toolbar is back to the first language");
     }
 
+    [Fact]
+    public void The_interface_is_available_in_spanish()
+    {
+        using var app = new AppSession();
+        var combo = app.ById("Language").AsComboBox();
+        combo.Expand();
+        AppSession.WaitFor(() => combo.Items.FirstOrDefault(i => i.Name == "Español"), "Español in the list")
+            .Patterns.SelectionItem.Pattern.Select();
+        combo.Collapse();
+
+        AppSession.WaitUntil(() => app.ById("AddCategory").Name == "Añadir una categoría", "the toolbar is in Spanish");
+    }
+
     private static void SelectOtherLanguage(AppSession app)
     {
         var combo = app.ById("Language").AsComboBox();

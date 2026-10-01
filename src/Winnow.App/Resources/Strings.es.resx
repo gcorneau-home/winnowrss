@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Toolbar_Category" xml:space="preserve"><value>Categoría</value></data>
+  <data name="Toolbar_Category_Tip" xml:space="preserve"><value>Añadir una categoría</value></data>
+  <data name="Toolbar_Feed" xml:space="preserve"><value>Fuente</value></data>
+  <data name="Toolbar_Feed_Tip" xml:space="preserve"><value>Añadir una fuente a la categoría seleccionada</value></data>
+  <data name="Toolbar_Refresh" xml:space="preserve"><value>Actualizar</value></data>
+  <data name="Toolbar_Refresh_Tip" xml:space="preserve"><value>Actualizar todas las fuentes</value></data>
+  <data name="Toolbar_Language_Tip" xml:space="preserve"><value>Idioma de la interfaz</value></data>
+  <data name="Menu_AddFeed" xml:space="preserve"><value>Añadir fuente…</value></data>
+  <data name="Menu_Rename" xml:space="preserve"><value>Cambiar nombre…</value></data>
+  <data name="Menu_Delete" xml:space="preserve"><value>Eliminar…</value></data>
+  <data name="Menu_Refresh" xml:space="preserve"><value>Actualizar</value></data>
+  <data name="Menu_Edit" xml:space="preserve"><value>Editar…</value></data>
+  <data name="Node_Archive" xml:space="preserve"><value>Archivo</value></data>
+  <data name="Node_Trash" xml:space="preserve"><value>Papelera</value></data>
+  <data name="Node_Loading" xml:space="preserve"><value>Cargando…</value></data>
+  <data name="Node_LoadError" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Feed_LastRefreshFailed" xml:space="preserve"><value>La última actualización falló: {0}</value></data>
+  <data name="Reading_Placeholder" xml:space="preserve"><value>Haga doble clic en un artículo para abrirlo.</value></data>
+  <data name="Status_Ready" xml:space="preserve"><value>Listo</value></data>
+  <data name="Status_Refreshing" xml:space="preserve"><value>Actualizando las fuentes…</value></data>
+  <data name="Status_RefreshingFeed" xml:space="preserve"><value>Actualizando {0}…</value></data>
+  <data name="Status_Refreshed" xml:space="preserve"><value>Actualizado a las {0:t}: {1} artículo(s) nuevo(s)</value></data>
+  <data name="Status_RefreshedWithFailures" xml:space="preserve"><value>Actualizado a las {0:t}: {1} artículo(s) nuevo(s), {2} fuente(s) con error</value></data>
+  <data name="Status_RefreshFailed" xml:space="preserve"><value>La actualización falló: {0}</value></data>
+  <data name="Status_AddingFeed" xml:space="preserve"><value>Añadiendo la fuente…</value></data>
+  <data name="Status_FeedAdded" xml:space="preserve"><value>{0} añadida</value></data>
+  <data name="Status_FeedMoved" xml:space="preserve"><value>{0} movida a {1}</value></data>
+  <data name="Dialog_OK" xml:space="preserve"><value>Aceptar</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Dialog_Name" xml:space="preserve"><value>Nombre:</value></data>
+  <data name="Dialog_Title" xml:space="preserve"><value>Título:</value></data>
+  <data name="Dialog_Address" xml:space="preserve"><value>Dirección:</value></data>
+  <data name="Dialog_NewCategory_Title" xml:space="preserve"><value>Nueva categoría</value></data>
+  <data name="Dialog_RenameCategory_Title" xml:space="preserve"><value>Cambiar el nombre de la categoría</value></data>
+  <data name="Dialog_DeleteCategory_Title" xml:space="preserve"><value>Eliminar la categoría</value></data>
+  <data name="Dialog_DeleteCategory_Message" xml:space="preserve"><value>¿Eliminar la categoría «{0}» y sus {1} fuente(s)?</value></data>
+  <data name="Dialog_DeleteCategory_Archived" xml:space="preserve"><value>Su archivo contiene {0} artículo(s); se eliminarán definitivamente.</value></data>
+  <data name="Dialog_AddFeed_Title" xml:space="preserve"><value>Añadir una fuente a «{0}»</value></data>
+  <data name="Dialog_FeedAddress" xml:space="preserve"><value>Dirección de la fuente (RSS o Atom):</value></data>
+  <data name="Dialog_EditFeed_Title" xml:space="preserve"><value>Editar la fuente</value></data>
+  <data name="Dialog_DeleteFeed_Title" xml:space="preserve"><value>Eliminar la fuente</value></data>
+  <data name="Dialog_DeleteFeed_Message" xml:space="preserve"><value>¿Cancelar la suscripción a «{0}»?</value></data>
+  <data name="Dialog_DeleteFeed_Archived" xml:space="preserve"><value>Se eliminarán definitivamente {0} artículo(s) archivado(s) de esta fuente.</value></data>
+  <data name="Dialog_CreateCategoryFirst" xml:space="preserve"><value>Primero cree una categoría.</value></data>
+  <data name="Error_Unexpected_Title" xml:space="preserve"><value>WinnowRSS: error inesperado</value></data>
+  <data name="Error_CategoryNameEmpty" xml:space="preserve"><value>El nombre de la categoría no puede estar vacío.</value></data>
+  <data name="Error_FeedAlreadySubscribed" xml:space="preserve"><value>Ya está suscrito a esta fuente.</value></data>
+  <data name="Error_FeedUnreadable" xml:space="preserve"><value>No se pudo leer la fuente: {0}</value></data>
+  <data name="Error_FeedTimeout" xml:space="preserve"><value>La fuente no respondió a tiempo.</value></data>
+  <data name="Error_FeedTitleEmpty" xml:space="preserve"><value>El título de la fuente no puede estar vacío.</value></data>
+  <data name="Error_FeedUrlInvalid" xml:space="preserve"><value>La dirección de la fuente debe ser una URL http o https.</value></data>
+  <data name="Error_FeedUrlInUse" xml:space="preserve"><value>Esta dirección ya la usa la fuente «{0}».</value></data>
+  <data name="Error_LanguageNotSaved" xml:space="preserve"><value>No se pudo guardar la preferencia de idioma: {0}</value></data>
+  <data name="Error_OperationFailed" xml:space="preserve"><value>La operación falló: {0}</value></data>
+  <data name="Error_StartupFailed" xml:space="preserve"><value>WinnowRSS no pudo abrir su base de datos y se cerrará.
+
+{0}</value></data>
+  <data name="Article_Pin_Tip" xml:space="preserve"><value>Fijar</value></data>
+  <data name="Article_ThumbUp_Tip" xml:space="preserve"><value>Interesante</value></data>
+  <data name="Article_ThumbDown_Tip" xml:space="preserve"><value>No interesante</value></data>
+  <data name="Article_Delete_Tip" xml:space="preserve"><value>Mover a la papelera</value></data>
+  <data name="Article_OpenInBrowser_Tip" xml:space="preserve"><value>Abrir en el navegador</value></data>
+  <data name="Article_Find_Placeholder" xml:space="preserve"><value>Buscar en el artículo (Ctrl+F)</value></data>
+  <data name="Article_By" xml:space="preserve"><value>Por {0}</value></data>
+  <data name="Tab_Close_Tip" xml:space="preserve"><value>Cerrar (Ctrl+W)</value></data>
+  <data name="Error_WebViewUnavailable" xml:space="preserve"><value>El visor de artículos (WebView2) no pudo iniciarse: {0}</value></data>
+  <data name="Menu_Open" xml:space="preserve"><value>Abrir</value></data>
+  <data name="Menu_Archive" xml:space="preserve"><value>Archivar</value></data>
+  <data name="Menu_MoveToTrash" xml:space="preserve"><value>Mover a la papelera</value></data>
+  <data name="Menu_Restore" xml:space="preserve"><value>Restaurar</value></data>
+  <data name="Menu_EmptyTrash" xml:space="preserve"><value>Vaciar la papelera…</value></data>
+  <data name="Article_Archive_Tip" xml:space="preserve"><value>Archivar (conserva el artículo y sus imágenes, incluso sin conexión)</value></data>
+  <data name="Article_Restore_Tip" xml:space="preserve"><value>Restaurar desde la papelera</value></data>
+  <data name="Article_StateArchived" xml:space="preserve"><value>Archivado</value></data>
+  <data name="Article_StateTrashed" xml:space="preserve"><value>En la papelera</value></data>
+  <data name="Toolbar_Search_Placeholder" xml:space="preserve"><value>Buscar en todos los artículos</value></data>
+  <data name="Toolbar_Search_Tip" xml:space="preserve"><value>Buscar</value></data>
+  <data name="Search_TabHeader" xml:space="preserve"><value>Búsqueda: {0}</value></data>
+  <data name="Search_ResultCount" xml:space="preserve"><value>{0} resultado(s) para «{1}»</value></data>
+  <data name="Search_NoResults" xml:space="preserve"><value>Ningún artículo coincide con «{0}».</value></data>
+  <data name="Dialog_EmptyTrash_Title" xml:space="preserve"><value>Vaciar la papelera</value></data>
+  <data name="Dialog_EmptyTrash_Message" xml:space="preserve"><value>¿Eliminar definitivamente los {0} artículo(s) de la papelera?</value></data>
+  <data name="Status_Archiving" xml:space="preserve"><value>Archivando…</value></data>
+  <data name="Status_Archived" xml:space="preserve"><value>{0} artículo(s) archivado(s), {1} imagen(es) guardada(s)</value></data>
+  <data name="Status_ArchivedWithFailures" xml:space="preserve"><value>{0} artículo(s) archivado(s), {1} imagen(es) guardada(s), {2} no disponible(s)</value></data>
+  <data name="Status_ArticlesTrashed" xml:space="preserve"><value>{0} artículo(s) movido(s) a la papelera</value></data>
+  <data name="Status_ArticlesRestored" xml:space="preserve"><value>{0} artículo(s) restaurado(s)</value></data>
+  <data name="Status_TrashEmptied" xml:space="preserve"><value>Papelera vaciada: {0} artículo(s) eliminado(s)</value></data>
+  <data name="Error_CriterionEmpty" xml:space="preserve"><value>Un criterio no puede estar vacío.</value></data>
+  <data name="Toolbar_Filter" xml:space="preserve"><value>Filtro</value></data>
+  <data name="Toolbar_Filter_Tip" xml:space="preserve"><value>Ajustes del filtro: intereses, exclusiones, modelo</value></data>
+  <data name="Toolbar_ShowRejected_Tip" xml:space="preserve"><value>Mostrar los artículos filtrados</value></data>
+  <data name="Verdict_Kept" xml:space="preserve"><value>Conservado por el filtro: {0}</value></data>
+  <data name="Verdict_Kept_Bare" xml:space="preserve"><value>Conservado por el filtro</value></data>
+  <data name="Verdict_Rejected" xml:space="preserve"><value>Filtrado: {0}</value></data>
+  <data name="Verdict_Rejected_Bare" xml:space="preserve"><value>Filtrado</value></data>
+  <data name="Verdict_Pending" xml:space="preserve"><value>Esperando al filtro…</value></data>
+  <data name="Verdict_Error" xml:space="preserve"><value>Error del filtro: {0}</value></data>
+  <data name="Verdict_Error_Bare" xml:space="preserve"><value>Error del filtro</value></data>
+  <data name="Status_Filtering" xml:space="preserve"><value>Filtrando: quedan {0} artículo(s)…</value></data>
+  <data name="Status_FilterDone" xml:space="preserve"><value>Filtrado terminado: {0} conservado(s), {1} filtrado(s)</value></data>
+  <data name="Status_FilterDoneWithErrors" xml:space="preserve"><value>Filtrado terminado: {0} conservado(s), {1} filtrado(s), {2} error(es)</value></data>
+  <data name="Status_FilterUnavailable" xml:space="preserve"><value>Filtro no disponible: {0}</value></data>
+  <data name="FilterWindow_Title" xml:space="preserve"><value>Filtro</value></data>
+  <data name="Filter_Enabled" xml:space="preserve"><value>Filtrar los artículos nuevos con un modelo local (Ollama)</value></data>
+  <data name="Filter_Endpoint" xml:space="preserve"><value>Dirección de Ollama</value></data>
+  <data name="Filter_Model" xml:space="preserve"><value>Modelo</value></data>
+  <data name="Filter_TestConnection" xml:space="preserve"><value>Probar la conexión</value></data>
+  <data name="Filter_Connected" xml:space="preserve"><value>Conectado: {0} modelo(s) instalado(s).</value></data>
+  <data name="Filter_ModelMissing" xml:space="preserve"><value> El modelo «{0}» no está instalado (ollama pull {0}).</value></data>
+  <data name="Filter_ConnectionFailed" xml:space="preserve"><value>La conexión falló: {0}</value></data>
+  <data name="Filter_Interests" xml:space="preserve"><value>Intereses</value></data>
+  <data name="Filter_Interests_Help" xml:space="preserve"><value>Los artículos sobre uno de estos temas se conservan.</value></data>
+  <data name="Filter_Exclusions" xml:space="preserve"><value>Exclusiones</value></data>
+  <data name="Filter_Exclusions_Help" xml:space="preserve"><value>Los artículos sobre uno de estos temas se filtran, aunque coincidan con un interés.</value></data>
+  <data name="Filter_AddInterest" xml:space="preserve"><value>Añadir un interés</value></data>
+  <data name="Filter_AddExclusion" xml:space="preserve"><value>Añadir una exclusión</value></data>
+  <data name="Filter_RemoveCriterion" xml:space="preserve"><value>Quitar</value></data>
+  <data name="Filter_CriterionEnabled_Tip" xml:space="preserve"><value>Usar este criterio</value></data>
+  <data name="Filter_Refilter" xml:space="preserve"><value>Volver a filtrar los artículos no leídos después de guardar</value></data>
+  <data name="Dialog_Save" xml:space="preserve"><value>Guardar</value></data>
+  <data name="Verdict_RejectedNoInterest" xml:space="preserve"><value>Filtrado, no coincide con ninguno de sus intereses: {0}</value></data>
+  <data name="Verdict_RejectedNoInterest_Bare" xml:space="preserve"><value>Filtrado, no coincide con ninguno de sus intereses</value></data>
+  <data name="Toolbar_Theme_Tip" xml:space="preserve"><value>Tema</value></data>
+  <data name="Theme_System" xml:space="preserve"><value>Tema del sistema</value></data>
+  <data name="Theme_Light" xml:space="preserve"><value>Claro</value></data>
+  <data name="Theme_Dark" xml:space="preserve"><value>Oscuro</value></data>
+  <data name="Error_ThemeInvalid" xml:space="preserve"><value>Este archivo no es un tema de VS Code utilizable: {0}</value></data>
+  <data name="Error_ThemeNone" xml:space="preserve"><value>Esta extensión no contiene ningún tema de colores.</value></data>
+  <data name="Error_ThemeCatalogUnavailable" xml:space="preserve"><value>No se puede acceder al catálogo de temas (Open VSX): {0}</value></data>
+  <data name="Toolbar_Themes_Tip" xml:space="preserve"><value>Temas: instalar temas de VS Code</value></data>
+  <data name="ThemesWindow_Title" xml:space="preserve"><value>Temas</value></data>
+  <data name="Themes_InstalledTitle" xml:space="preserve"><value>Temas instalados</value></data>
+  <data name="Themes_NoneInstalled" xml:space="preserve"><value>Todavía no hay ningún tema instalado: busque uno abajo o importe un archivo de tema de VS Code.</value></data>
+  <data name="Themes_Import" xml:space="preserve"><value>Importar un archivo…</value></data>
+  <data name="Themes_ImportFilter" xml:space="preserve"><value>Temas de VS Code (*.json, *.vsix)|*.json;*.vsix</value></data>
+  <data name="Themes_Apply" xml:space="preserve"><value>Aplicar</value></data>
+  <data name="Themes_Delete" xml:space="preserve"><value>Eliminar este tema</value></data>
+  <data name="Themes_CatalogTitle" xml:space="preserve"><value>Buscar temas en línea</value></data>
+  <data name="Themes_CatalogHelp" xml:space="preserve"><value>Busque entre los temas de colores de Visual Studio Code en Open VSX (open-vsx.org), p. ej. Dracula, Nord, Catppuccin, Tokyo Night.</value></data>
+  <data name="Themes_Install" xml:space="preserve"><value>Instalar</value></data>
+  <data name="Themes_Details" xml:space="preserve"><value>de {0} · {1} descargas</value></data>
+  <data name="Themes_ResultCount" xml:space="preserve"><value>{0} extensión(es) de temas encontrada(s).</value></data>
+  <data name="Themes_NoResults" xml:space="preserve"><value>No se encontró ningún tema para «{0}».</value></data>
+  <data name="Themes_Installing" xml:space="preserve"><value>Instalando {0}…</value></data>
+  <data name="Themes_Installed" xml:space="preserve"><value>{0} instalado: {1} tema(s), el primero ya está en uso.</value></data>
+  <data name="Dialog_Close" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Verdict_KeptTrustedFeed" xml:space="preserve"><value>Conservado: fuente de confianza ({0})</value></data>
+  <data name="Verdict_RejectedKeyword" xml:space="preserve"><value>Filtrado: el título contiene «{0}»</value></data>
+  <data name="Filter_Keywords" xml:space="preserve"><value>Palabras clave (en el título)</value></data>
+  <data name="Filter_Keywords_Help" xml:space="preserve"><value>Un artículo cuyo título contiene una de estas palabras (palabra completa, sin distinguir mayúsculas) se filtra directamente, sin consultar al modelo. Útil para formatos como «Quiz» o «Podcast».</value></data>
+  <data name="Filter_AddKeyword" xml:space="preserve"><value>Añadir una palabra clave</value></data>
+  <data name="Filter_TrustedFeeds" xml:space="preserve"><value>Fuentes de confianza</value></data>
+  <data name="Filter_TrustedFeeds_Help" xml:space="preserve"><value>No filtrar nunca estas fuentes: se conservan todos sus artículos, sean cuales sean los criterios.</value></data>
+  <data name="Menu_CloseTab" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Menu_CloseOtherTabs" xml:space="preserve"><value>Cerrar las demás pestañas</value></data>
+  <data name="Menu_CloseAllTabs" xml:space="preserve"><value>Cerrar todas las pestañas</value></data>
+  <data name="Toolbar_Settings_Tip" xml:space="preserve"><value>Ajustes</value></data>
+  <data name="SettingsWindow_Title" xml:space="preserve"><value>Ajustes</value></data>
+  <data name="Settings_Reading" xml:space="preserve"><value>Lectura</value></data>
+  <data name="Settings_OpenWith" xml:space="preserve"><value>Abrir un artículo con</value></data>
+  <data name="Settings_DoubleClick" xml:space="preserve"><value>doble clic</value></data>
+  <data name="Settings_SingleClick" xml:space="preserve"><value>un solo clic</value></data>
+  <data name="Settings_MaxTabs" xml:space="preserve"><value>Artículos abiertos como máximo</value></data>
+  <data name="Settings_MaxTabs_Help" xml:space="preserve"><value>a partir de ahí, se cierra la pestaña vista hace más tiempo</value></data>
+  <data name="Settings_UnreadCues" xml:space="preserve"><value>Artículos no leídos</value></data>
+  <data name="Settings_RejectedCues" xml:space="preserve"><value>Artículos filtrados</value></data>
+  <data name="Settings_Cue_Bold" xml:space="preserve"><value>Negrita</value></data>
+  <data name="Settings_Cue_Dot" xml:space="preserve"><value>Punto de color</value></data>
+  <data name="Settings_Cue_DimRead" xml:space="preserve"><value>Atenuar los artículos leídos</value></data>
+  <data name="Settings_Cue_Dimmed" xml:space="preserve"><value>En gris</value></data>
+  <data name="Settings_Cue_Italic" xml:space="preserve"><value>Cursiva</value></data>
+  <data name="Settings_Cue_Icon" xml:space="preserve"><value>Icono de filtro</value></data>
+  <data name="Settings_Cue_Strikethrough" xml:space="preserve"><value>Tachados</value></data>
+  <data name="Settings_Preview" xml:space="preserve"><value>Vista previa</value></data>
+  <data name="Settings_Preview_Unread" xml:space="preserve"><value>Un artículo no leído</value></data>
+  <data name="Settings_Preview_Read" xml:space="preserve"><value>Un artículo ya leído</value></data>
+  <data name="Settings_Preview_Rejected" xml:space="preserve"><value>Un artículo filtrado</value></data>
+  <data name="Menu_OpenUnread" xml:space="preserve"><value>Abrir los artículos no leídos</value></data>
+  <data name="Status_OpenedUnread" xml:space="preserve"><value>{0} artículo(s) no leído(s) abierto(s)</value></data>
+  <data name="Status_OpenedUnreadLimited" xml:space="preserve"><value>{0} de {1} artículos no leídos abiertos (límite de pestañas, ver Ajustes)</value></data>
+  <data name="Toolbar_ShowRead_Tip" xml:space="preserve"><value>Mostrar los artículos leídos</value></data>
+  <data name="Settings_Zoom" xml:space="preserve"><value>Zoom de los artículos</value></data>
+  <data name="Settings_Zoom_Help" xml:space="preserve"><value>Ctrl + rueda del ratón sigue ampliando o reduciendo un artículo de forma puntual</value></data>
+  <data name="Settings_About" xml:space="preserve"><value>Acerca de WinnowRSS</value></data>
+  <data name="AboutWindow_Title" xml:space="preserve"><value>Acerca de WinnowRSS</value></data>
+  <data name="About_Version" xml:space="preserve"><value>Versión</value></data>
+  <data name="About_Description" xml:space="preserve"><value>Un lector RSS sencillo que filtra los artículos según sus intereses con un modelo de lenguaje que se ejecuta en su propio PC.</value></data>
+  <data name="About_CreditsTitle" xml:space="preserve"><value>Créditos</value></data>
+  <data name="About_CreatedBy" xml:space="preserve"><value>Creado por Gaétan Corneau.</value></data>
+  <data name="About_BuiltWith" xml:space="preserve"><value>Construido con Claude Code, el agente de programación de Anthropic: Claude escribió cada línea de código, ninguna se escribió a mano. ¡Gracias, amigo!</value></data>
+  <data name="About_Thanks" xml:space="preserve"><value>Gracias también a los autores de .NET y WPF, CommunityToolkit.Mvvm, Dapper, SQLite, Microsoft WebView2, Ollama y los modelos Qwen, y de los temas de VS Code de Open VSX.</value></data>
+  <data name="About_License" xml:space="preserve"><value>Software libre con licencia MIT.</value></data>
+  <data name="About_Repository" xml:space="preserve"><value>Código fuente en GitHub</value></data>
+  <data name="About_LicenseLink" xml:space="preserve"><value>Licencia</value></data>
+  <data name="About_Notices" xml:space="preserve"><value>Componentes de terceros</value></data>
+</root>

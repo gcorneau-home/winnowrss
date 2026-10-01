@@ -18,7 +18,7 @@ A simple RSS reader for Windows that **filters articles by interest with a langu
 - **Archive** per category (the article and its images are kept), **trash** that can be restored, pins, 👍/👎 ratings.
 - **Full-text search** across all articles, accent-insensitive.
 - **Themes**: light, dark, follow Windows, or any **VS Code color theme** from Open VSX or a file.
-- **English and French** interface, switched live.
+- Interface in **English, French and Spanish**, switched live.
 - **Settings**: open articles with a single or double click, how unread and filtered-out articles stand out, maximum number of open tabs, default zoom.
 - Feeds refresh every 30 minutes. Read articles and the trash are purged after 30 days, except pinned, rated and archived ones.
 

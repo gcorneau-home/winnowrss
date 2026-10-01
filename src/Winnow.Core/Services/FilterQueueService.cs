@@ -87,7 +87,7 @@ public sealed class FilterQueueService(
                 filterSettings.Endpoint,
                 filterSettings.Model,
                 await criteria.GetAllAsync(ct),
-                LanguageName(await settings.GetUiLanguageAsync(ct)));
+                LanguageNames.English(await settings.GetUiLanguageAsync(ct)));
             var remaining = await articles.CountPendingAsync(ct);
             var feedsById = (await feeds.GetAllAsync(ct)).ToDictionary(f => f.Id);
 
@@ -141,10 +141,4 @@ public sealed class FilterQueueService(
 
         return new FilterRunResult(kept, rejected, errors, null);
     }
-
-    private static string LanguageName(string? code) => code switch
-    {
-        "fr" => "French",
-        _ => "English",
-    };
 }

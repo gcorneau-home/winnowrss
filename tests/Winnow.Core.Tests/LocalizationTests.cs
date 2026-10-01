@@ -9,16 +9,34 @@ public partial class LocalizationTests
 {
     private static readonly string ResourcesDir = Path.Combine(RepoRoot(), "src", "Winnow.App", "Resources");
 
+    private static string[] TranslationFiles() =>
+        Directory.GetFiles(ResourcesDir, "Strings.*.resx").Select(f => Path.GetFileName(f)).Order().ToArray();
+
+    public static TheoryData<string> Translations() => new(TranslationFiles());
+
     [Fact]
-    public void English_and_french_tables_have_the_same_keys_and_placeholders()
+    public void French_and_spanish_translations_exist() =>
+        Assert.Equal(["Strings.es.resx", "Strings.fr.resx"], TranslationFiles());
+
+    [Theory]
+    [MemberData(nameof(Translations))]
+    public void Each_translation_has_the_english_keys_and_placeholders(string file)
     {
         var english = Load("Strings.resx");
-        var french = Load("Strings.fr.resx");
+        var translation = Load(file);
 
-        Assert.Empty(english.Keys.Except(french.Keys));
-        Assert.Empty(french.Keys.Except(english.Keys));
-        Assert.All(english, e => Assert.Equal(Placeholders(e.Value), Placeholders(french[e.Key])));
+        Assert.Empty(english.Keys.Except(translation.Keys));
+        Assert.Empty(translation.Keys.Except(english.Keys));
+        Assert.All(english, e => Assert.Equal(Placeholders(e.Value), Placeholders(translation[e.Key])));
     }
+
+    [Theory]
+    [InlineData("en", "English")]
+    [InlineData("fr", "French")]
+    [InlineData("es", "Spanish")]
+    [InlineData("xx-unknown", "English")]
+    public void Language_codes_have_english_names_for_the_model(string code, string name) =>
+        Assert.Equal(name, Winnow.Core.Models.LanguageNames.English(code));
 
     [Fact]
     public void Every_error_code_has_a_message()
