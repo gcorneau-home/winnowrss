@@ -1,7 +1,9 @@
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Winnow.App.Controls;
 using Winnow.App.Services;
 using Winnow.App.ViewModels;
@@ -20,6 +22,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = ViewModel = viewModel;
         Tree.CanInvokeItem = item => item is ArticleNodeViewModel;
+        ViewModel.Tabs.CollectionChanged += Tabs_CollectionChanged;
     }
 
     public MainViewModel ViewModel { get; }
@@ -92,6 +95,27 @@ public partial class MainWindow : Window
             view.FocusFind();
             e.Handled = true;
         }
+    }
+
+    // ----- Keyboard focus after a tab closes -----
+
+    // Closing the focused tab leaves no element with keyboard focus, and the window's shortcuts (Ctrl+F4, Ctrl+W)
+    // stop working until something is clicked. Once the tab control has settled, hand the focus to the selected tab.
+    private void Tabs_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace
+            or NotifyCollectionChangedAction.Reset)
+            Dispatcher.InvokeAsync(RestoreKeyboardFocus, DispatcherPriority.Input);
+    }
+
+    private void RestoreKeyboardFocus()
+    {
+        if (!IsActive || Keyboard.FocusedElement is UIElement { IsVisible: true } focused && IsAncestorOf(focused))
+            return;
+        if (ArticleTabs.ItemContainerGenerator.ContainerFromItem(ViewModel.SelectedTab) is TabItem tab)
+            tab.Focus();
+        else
+            Tree.Focus();
     }
 
     private static T? FindDescendant<T>(DependencyObject root) where T : DependencyObject
